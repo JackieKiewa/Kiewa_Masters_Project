@@ -23,6 +23,10 @@
 
 
 
+
+
+
+
 \begin{document}
 
 
@@ -64,10 +68,10 @@ An important complex trait that differs amongst individuals is the level of gene
 
 \citet{lloyd2017genetic} conducted an analysis using data from the Consortium for the Architecture of Gene Expression (CAGE), which comprises individual-level whole-blood expression and genotype data on 2,765 individuals. This analysis identified a total of 14,995 independent (eQTL), of which 11,204  were located proximal to their transcript (i.e., \emph{cis}). In particular, \emph{cis}-eQTL were defined to be those associations such that the SNP was located on the same chromosome as the gene and \emph{trans}-eQTL the complement of this. The aim of this research is to identify DNA motifs in the genomic regions surrounding the set of \emph{cis}-eQTL identified by \citet{lloyd2017genetic}, following the hypothesis that flanking sequences of an eQTL will be enriched in recurring motifs of DNA that have a biological function, most likely involved in transcription.
 
-The overarching hypothesis of this research project is that if DNA motifs are detected in the sequences that surround eQTL then we would expect them to have a common regulatory process across a subset of genes that harbour eQTL in the nearby region. We are searching for a conserved set of mechanisms across blood gene expression that acts through DNA motifs. This project sought to establish first whether it is indeed the case that DNA motifs can be detected in a robust manner using large scale computational techniques applied to a large set of sequences. Secondary, to the detection and quantification of the motifs surrounding eQTL, these analyses are intended as a starting point for further investigation into the global role of motifs in  gene expression regulation in regions of the genome that contribute to variation of gene expression in whole blood. 
+The overarching hypothesis of this research project is that if DNA motifs are detected in the sequences that surround eQTL then we would expect them to have a common regulatory process across a subset of genes that harbour eQTL in the nearby region. We are searching for a conserved set of mechanisms across blood gene expression that acts through DNA motifs. This project sought to establish first whether it is indeed the case that DNA motifs can be detected in a robust manner using large scale computational techniques applied to a large set of sequences. Secondly, these analyses are intended as a starting point for further investigation into the global role of motifs in  gene expression regulation in regions of the genome that contribute to variation of gene expression in whole blood. 
 
-The report structure is as follows. Section 1 begins with an outline of the 
-primary hypothesised biological role of motifs in DNA to clarify the potential importance of motifs and their link with eQTLs. Modes of motif detection in vivo, in vitro and in silico are described, and the latter exemplified with a conceptual example of motif detection algorithms. This section also introduces the notation used in this report and some key concepts. In Section 2 we will outline the purpose and main results of a pilot study, which motivated key choices in study design for the primary study.  Section 3 summarises the study design and resources used for the primary study before providing a detailed description of results. Sections 4 and 5 highlight some of the key conclusions of the study, summarise the primary lessons learnt and the caveats of the study and then look to future work. 
+The report structure is as follows. Following this introduction, Section 1 outlines the 
+primary hypothesised biological role of motifs in DNA to clarify the potential importance of motifs and their link with eQTLs. Modes of motif detection in vivo, in vitro and in silico are described, and the latter exemplified with a conceptual example of motif detection algorithms. This section also introduces the notation used in this report and some key concepts. Section 2 outlines the purpose and main results of a pilot study, which motivated key choices in study design for the primary study.  Section 3 summarises the study design and resources used for the primary study before providing a detailed description of results. Sections 4 and 5 highlight some of the key conclusions of the study, summarise the primary lessons learnt and the caveats of the study and then look to future work. 
  
 \subsection{Motif function}
 DNA sequence motifs are short, recurring sequences in DNA that are thought to have some biological function \citep{d2006dna}. They may form binding sites for proteins such as transcription factors or nucleases, or they may provide signals for important regulatory processes such as methylation, ribosome binding or mRNA processing \citep{d2006dna}. Gene regulation is an important aspect of the eukaryotic genotype \citep{beckerman2005gene}, changes in which are responsible for much of the phenotypic divergence between and within species \citep{stewart2012transcription}. However, an understanding of the biological mechanisms by which this diversity regulates gene expression has been challenging  \citep{pai2015genetic, gaffney2013global}. Transcription constitutes the first and one of the most intensely regulated steps of gene expression \citep{zabidi2016regulatory}, and a subset of DNA motifs in the region of eQTL are sequence binding sites for transcription factors (TFs). Much research has therefore focused on the identification of transcription factors that coincide with eQTL and are likely to enhance or restrict gene expression. 
@@ -89,7 +93,7 @@ This short summary of biological mechanisms for the regulation of gene or protei
 \subsection{Motif detection}
 DNA motif detection can be done experimentally or with high-throughput data analysis using computer algorithms. Identification of DNA motifs can be achieved through in vivo or in vitro experiments, which include, for example, ChIP-seq (in vivo) that uses actual TF binding events in particular biological conditions, such as cell type or treatment time point \citep{inukai2017transcription}. In vitro approaches (e.g. SELEX) use artificially created DNA and are well suited for large-scale characterization of intrinsic TF binding sequence preferences \citep{inukai2017transcription}.  Results from a ChIP-seq experiment typically have a resolution of approximately 100 base pairs, and the set of sequences identified as a result of the experiment (ChIP-seq data) becomes the focus of a search for a single motif for the particular transcription factor used within the binding experiment, i.e. one motif that is the best match over all sequences identified within the experimental process. This process has been termed one occurrence per sequence (OOPS) \citep{zhang2016entropy}. This consensus motif is putatively labelled as a transcription factor binding site (TFBS) for the bound transcription factor identified within the experimental data. 
 
-Alternatively, computational based motif detection searches for short lengths of DNA that are conserved across sequences, but is not limited to one motif per sequence or to TFBSs. Zero, one, or multiple different motifs per sequence can be identified. The conservation of these motifs is thought to indicate biological significance. This significance is not necessarily that of a TFBS, but might be due to some other factor, as described in Section 1.1 above. 
+Alternatively, computational based motif detection searches for short lengths of DNA that are conserved across sequences, but is not limited to one motif per sequence or to TFBSs. Zero, one, or multiple different motifs per sequence (respectively called `ZOOPS', `OOPS' and `MOPS') can be identified. The conservation of these motifs is thought to indicate biological significance. This significance is not necessarily that of a TFBS, but might be due to some other factor, as described in Section 1.1 above. 
 Multiple computational motif finding tools were first developed for finding transcription factors \citep{dassi2016dynamit}, and many of them require ChIP-seq sequences as input. Later tools were developed to find other motifs, but again often focused on a particular section of DNA, such as promoters or enhancers  \citep{boeva2016analysis}.
 
 \citet{das2007survey} describe motif discovery as one of the most challenging problems in molecular biology and computer science, and formulate it as follows:
@@ -97,13 +101,13 @@ given a set of sequences, find an unknown pattern that occurs frequently. If a p
 
 The problem increases in complexity with the introduction of $d$, which is the number of point changes that will be accepted in any motif instance. This change might take the form of a simple change in nucleotide (e.g. from an A to a T) or of an insertion or a deletion. Since an exact match may not exist, the motif detection algorithm must consider all possible combinations of ``words" of the given length across all sequences. Thus the problem becomes exponential with the number of sequences. For each combination, the detection algorithm must perform an alignment and calculate the probability that this combination of ``words" are instances of the same motif. At the end of this process, the combination of ``words" with the best probability will become the basis for a Position Weight Matrix (PWM) which will be the accepted consensual motif for this group of sequences. 
 
-Given this level of complexity, the motif finding problem is an example of an NP-complete problem \citep{tran2014survey} (NP $:$ nondeterministic polynomial time). A solution to the search problem can theoretically be found and verified in polynomial time by a nondeterministic algorithm which has the power of guessing correctly at every step \citep{dasgupta2006algorithms}. However, although such an algorithm theoretically exists, no polynomial time algorithm has yet been discovered for an NP-complete algorithm \citep{cormen2009introduction}.  Algorithms for solving this problem can be categorised as per \citet{sun2015affinity}, who grouped algorithms into exact algorithms, which achieve efficiency through organisational pre-processing such as a suffix tree to reduce the search space; and approximate algorithms, which use heuristic methods in combination with optimisation methods such as expectation-maximisation to reduce processing time.
+Given this level of complexity, the motif finding problem is an example of an NP-complete problem \citep{tran2014survey} (NP $=$ nondeterministic polynomial time). A solution to the search problem can theoretically be found and verified in polynomial time by a nondeterministic algorithm which has the power of guessing correctly at every step \citep{dasgupta2006algorithms}. However, although such an algorithm theoretically exists, no polynomial time algorithm has yet been discovered for an NP-complete algorithm \citep{cormen2009introduction}.  Algorithms for solving this problem can be categorised as per \citet{sun2015affinity}, who grouped algorithms into exact algorithms, which achieve efficiency through organisational pre-processing such as a suffix tree to reduce the search space; and approximate algorithms, which use heuristic methods in combination with optimisation methods such as expectation-maximisation to reduce processing time.
 \newpage
 \subsection{Conceptual example of a motif detection algorithm, and the Position Weight Matrix}
-This section will be used to describe one motif finding algorithm: the Gibbs algorithm \citep{Lawrence1993Gibbs}. A conceptual example will be provided, that follows that presented in \citep{jones2004introduction}. The concepts presented in this section underpin many of the algorithms
+This section will be used to describe one motif finding algorithm: the Gibbs algorithm \citep{Lawrence1993Gibbs}. A conceptual example will be provided, following that presented in \citet{jones2004introduction}. The concepts presented in this section underpin many of the algorithms
 used in the main data analysis and thus provide an intuitive look into the black box of the algorithms that pervade the computational motif search problem. 
 
-The example begins with a set of  $t=4$ sequences of length $n=10$ and, in which we are to find one example of a motif $M$ of length $l=7$ in each sequence:
+The example begins with a set of  $t=4$ sequences of length $n=10$, in which we are to find one example of a motif $M$ of length $l=7$ in each sequence:
 \begin{center}
 A  C  C  A  T  G  A  C  A  G\\
 G  A  T  T  A  T  A  C  C  T\\
@@ -112,13 +116,13 @@ C  G  G  A  A  T  G  C  A  T\\
 \end{center}
 The algorithm works through repeated iterations of a single process. Each iteration ends with a choice of starting position for the motif in one of the sequences.
 
-An iteration begins by setting one sequence aside as the target sequence. This sequence is chosen randomly, but in this example (see Figure \ref{gibbs1}, the first sequence (marked in red)) will be used as the random sequence. All other sequences form the background; the background sequences are used to create a frequency table, which is then used to calculate the probability of the motif occurring at each possible position in the target sequence.
+An iteration begins by setting one sequence aside as the target sequence. This sequence is chosen randomly, but in this example, the first sequence (marked in red (see Figure \ref{gibbs1})) will be used as the random sequence. All other sequences form the background; the background sequences are used to create a frequency table, which is then used to calculate the probability of the motif occurring at each possible position in the target sequence.
 
-To construct the frequency table, first a motif position is chosen, at random, for each background sequence. In Figure \ref{gibbs1} the background motifs are marked blue. Next the blue elements in the table are filled in according to the counts of the nucleotides for each position in the background motifs. The column headers in the table indicate the positions in the motifs. The green column (with the zero header) is filled in according to the counts of nucleotides in the non-motif background, irrespective of position. This creates the following scenario:
+To construct the frequency table, first a motif position is chosen, at random, for each background sequence. In Figure \ref{gibbs1} the background motifs are marked blue. Next the blue elements in the table are filled in according to the counts of the nucleotides for each position in the background motifs. The column headers in the table indicate the positions in the motifs. The green column (with the zero header) is filled in according to the counts of nucleotides in the non-motif background, irrespective of position. Figure \ref{gibbs1} illustrates the process:
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.7\linewidth]{GibbsTable.pdf}
+\includegraphics[width=0.7\linewidth]{GibbsTable.png}
 \caption{Gibbs algorithm: creating the frequency table.}\label{gibbs1}
 \end{figure}
 
@@ -136,14 +140,36 @@ Each element in the numerator is found by referencing the corresponding motif po
 \caption{Gibbs algorithm: calculating the probability of the first motif start position.}\label{gibbs2}
 \end{figure}
 
-The lower table of motif probabilities is normalised, and then used to weight a random choice of motif start position for the target sequence. This choice of motif for the target sequence is the culmination of this iteration. After hundreds of such iterations, depending on the number of sequences, motif positions will no longer be totally random, but most will have been weighted according to the procedure described above. After a certain number of iterations, a log likelihood of the probability of the current set of motifs is taken. If this log-likelihood is better than the previous, it is retained; otherwise it is discarded and the algorithm returns to the motif positions for the previous log-likelihood. After many thousands of iterations the log-likelihood is never better than the previous, and at this point convergence has been reached and a position weight matrix can be calculated for the set of motifs found.
+The lower table of motif probabilities is normalised, and then used to weight a random choice of motif start position for the target sequence. This choice of motif for the target sequence is the culmination of this iteration. After hundreds of such iterations, depending on the number of sequences, motif positions will no longer be totally random, but most will have been weighted according to the procedure described above. After a certain number of iterations, a log likelihood of the probability of the current set of motifs is taken. If this log-likelihood is better than the previous, it is retained; otherwise it is discarded and the algorithm returns to the motif positions for the previous log-likelihood. After many thousands of iterations the log-likelihood is never better than the previous; at this point convergence has been reached and a position weight matrix can be calculated for the set of motifs found.
 
-The PWM itself is a useful tool that ensures that no information is lost with respect to the consensus motif sequence, since it records the frequency of each nucleotide in each position over all sequences (the position frequency matrix) before working out the probabilities for the final PWM. Another advantage is its convenient visualisation as a sequence logo, and a number of data bases (e.g. JASPAR \citep{Mathelier2016}; Hocomoco \citep{Kulakovskiy2018} and UniPROBE \citep{Hume2015}) now store many hundreds of PWMs that match every known transcription factor. In fact the PWM \textit{is} the motif, rather than the consensus sequence. The main disadvantage of the PWM is its assumption of independence of each position within the binding site, which may not always be true \citep{Jayaram2016}. However, as \citet{Jayaram2016} points out, in practice, PWM models tend to perform as well as more complex models that attempt to include nucleotide interdependencies in their calculations, but which are often more prone to learning noise.
+The PWM itself is a useful tool that ensures that no information is lost with respect to the consensus motif sequence, since it records the frequency of each nucleotide in each position over all sequences (the position frequency matrix) before working out the probabilities for the final PWM. Another advantage is its convenient visualisation as a sequence logo, and a number of data bases (e.g. JASPAR \citep{Khan2018}; Hocomoco \citep{Kulakovskiy2018} and UniPROBE \citep{Hume2015}) now store many hundreds of PWMs that match every known transcription factor. In fact the PWM \textit{is} the motif, rather than the consensus sequence. Table \ref{pwmTable} provides an example of a PWM for the transcription factor `SP1'(using JASPAR profile MA0079 \citep{Khan2018}) and Figure \ref{pwm} provides a sequence logo for this TF that has been created from the same PWM \citep{Khan2018}.
+
+\begin{table}[!htbp]
+\centering
+\caption{PWM for the SP1 transcription factor}
+\label{pwmTable}
+\begin{tabular}{c c c c c c c c c c c}
+A & 1 & 2 & 0 & 0 & 0 & 2 & 0 & 0 & 1 & 2\\
+C&1&1&0&0&5&0&1&0&1&0\\ 
+G&4&4&8&8&2&4&5&6&6&0\\
+T&2&1&0&0&1&2&2&2&0&6\\
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering 
+     \includegraphics[width= 0.4\textwidth]{SP1Logo.pdf} 
+    \caption{Sequence logo for SP1 \citep{Khan2018}}. 
+    
+    \label{pwm}
+\end{figure}
+
+The main disadvantage of the PWM is its assumption of independence of each position within the binding site, which may not always be true \citep{Jayaram2016}. However, as \citet{Jayaram2016} points out, in practice, PWM models tend to perform as well as more complex models that attempt to include nucleotide interdependencies in their calculations, but which are often more prone to learning noise.
 
 \section{The Pilot Study}
 \subsection{Introduction to the Pilot Study}
-Computationally efficient algorithms were required for this analysis and thus a possible set of highly-used algorithms were evaluated via a pilot study using a set of 201 base pair regions with the full set of \emph{cis}- and \emph{trans}-eQTLs summary statistics generated in the CAGE study. The results from the pilot study were used to guide a larger investigation into the expected frequencies of detected motifs across the \emph{cis} sequences, aid in the choice
-of sequence length in the main study and allow for a set of algorithms to be determined for use in the main study.
+Computationally efficient algorithms were required for this analysis and thus a possible set of highly-used algorithms were evaluated via a pilot study using a set of 201 base pair regions with the full set of \emph{cis}- and \emph{trans}-eQTLs summary statistics generated in the CAGE study. The results from the pilot study were used to guide a larger investigation into the expected frequencies of detected motifs across the \emph{cis} sequences, in the choice
+of a set of algorithms used in the main study and in the analyses conducted.
 
 
 \subsection{Organisation of the data}
@@ -174,7 +200,7 @@ A comparison of the target and background sequence frequencies (see Table \ref{f
  
 \subsection{Potential motif algorithm set}
 
-The primary motivation of the pilot study was to establish a viable set algorithms that could be used in the larger study. An initial literature review provided some insight into the types of algorithms that can be used to identify motifs computationally. The OMICTools directory \citep{henry2014omictools} was used to provide a list of motif-finding algorithms. The following criteria was used as a guide to the choice of motifs:
+The primary motivation of the pilot study was to establish a viable set of algorithms that could be used in the larger study. An initial literature review provided some insight into the types of algorithms that can be used to identify motifs computationally. The OMICTools directory \citep{henry2014omictools} was used to provide a list of motif-finding algorithms. The following criteria was used as a guide to the choice of motifs:
 \begin{itemize}
 \item Used a discriminative algorithm (comparing frequency of motif in target sequences compared to background sequences);
 \item Number of citations;
@@ -186,17 +212,17 @@ The primary motivation of the pilot study was to establish a viable set algorith
 Based on these criteria, six algorithms: DREME \citep{bailey2011dreme}, HOMER  \citep{heinz2010simple}, motifRG \citep{yao2014discriminative}, STEME \citep{reid2011steme}, BaMM!motif \citep{siebert2016bayesian} and DECOD \citep{huggins2011decod}  were eventually chosen for comparison. A brief overview of each motif follows.
 
 
-DREME (Discriminative Regular Expression Motif Elicitation) \citep{bailey2011dreme} uses an enumerative algorithm, which is exact in the sense that it examines each possible `word' in the sequence, which is very inefficient, with time increasing exponentially with the size of the motif and the number of sequences. DREME achieves efficiency by limiting the size of the motifs found. Exact enumeration is used for seed motifs restricted to 3-8 base pairs in length, and significance established through comparison with the background sequence, using Fisher's Exact Test. Significance was reported using $e$-values. The $e$-value is useful in large data sets since it offers a correction for the potentially high false discovery rate. The $e$-value offers a count of expected occurrences, calculated by multiplying ``the probability that the match might occur by chance''  by ``the number of possible occurrences''. An $e$-value close to zero represents a likely match. When the $e$-value $< 0.01$, $p$-values and $e$-values are treated as identical \citep{Altschul}). Using $e$-values, the motif with the highest significance is used to create a set of non-overlapping occurrences in the set of sequences that are aligned to create a position-specific probability matrix. Following this step, the motif is `erased' and the search repeated.
+DREME (Discriminative Regular Expression Motif Elicitation) \citep{bailey2011dreme} uses an enumerative algorithm, which is exact in the sense that it examines each possible `word' in the sequence, which is very inefficient, with time increasing exponentially with the size of the motif and the number of sequences. DREME achieves efficiency by limiting the size of the motifs found. Exact enumeration is used for seed motifs restricted to 3-8 base pairs in length, and significance established through comparison with the background sequence, using Fisher's Exact Test. Significance was reported using $e$-values. The $e$-value is useful in large data sets since it offers a correction for the potentially high false discovery rate. The $e$-value offers a count of expected occurrences, calculated by multiplying ``the probability that the match might occur by chance''  by ``the number of possible occurrences''. An $e$-value close to zero represents a likely match. When the $e$-value $< 0.01$, $p$-values and $e$-values are treated as identical \citep{NCBI2006}). Using $e$-values, the motif with the highest significance is used to create a set of non-overlapping occurrences in the set of sequences that are aligned to create a position-specific probability matrix. Following this step, the motif is `erased' and the search repeated.
  
 HOMER \citep{heinz2010simple} begins by weighting background sequences to resemble the same GC-content distribution of the target sequences, since enrichment scores used in the motif detection algorithms might fail if the distribution of the length of GC content of the target sequences significantly
 differs from the background set. Input sequences are then ``parsed" to gather all oligos of the desired motif length and read into an oligo table that records how many times each oligo occurs in the target and background sequences. These frequencies are used to calculate the relative enrichment of each oligo, using the cumulative binomial distribution. The enrichment of longer oligos are calculated using the enrichment values of smaller oligos that make up the longer oligos, similar to the DREME method of combining seed significances. The most enriched oligos are then subjected to a local optimization algorithm which uses a probability matrix to score each oligo according to its similarity to the matrix. By decreasing the detection threshold, more oligos can be included, until an optimal enrichment is found. New probability matrices can then be created at different detection levels, and the matrix that results in the highest enrichment will be used to produce the final motif. This motif is then masked from the sequences and the whole process repeated to find the next motif \citep{homer_ws}.
 
-MotifRG \citep{yao2014discriminative} begins by counting all $k$-mers, for a given motif length $k$, in all sequences. The motifRG algorithm uses logistic regression to fit a model with the best absolute $z$-value (which needs to be above an enrichment threshold). The chosen $k$-mer is used as a seed motif, which is then refined by stepped extension of a given number of nucleotides on each end of the seed at a time. Refinement ends when no further improvement in the $z$-value after two successive steps. Small perturbations in the seed motif are then tried and accepted if the $z$-value is improved, followed by the extension process. Since a small difference in the $z$-value may not be meaningful, a simple bootstrap test is done if the difference falls below a threshold. A default of 5 random samples of the sequences are used to calculate $z$-values for the new and original motifs. These $z$-values are then subjected to a $t$-test to establish whether their difference is significant.
+MotifRG \citep{yao2014discriminative} begins by counting all $k$-mers, for a given motif length $k$, in all sequences. The motifRG algorithm uses logistic regression to fit a model with the best absolute $z$-value (which needs to be above an enrichment threshold). The chosen $k$-mer is used as a seed motif, which is then refined by stepped extension of a given number of nucleotides on each end of the seed at a time. Refinement ends when the $z$-value has not improved after two successive steps. Small perturbations in the seed motif are then tried and accepted if the $z$-value is improved, followed by the extension process. Since a small difference in the $z$-value may not be meaningful, a simple bootstrap test is done if the difference falls below a threshold. A default of 5 random samples of the sequences are used to calculate $z$-values for the new and original motifs. These $z$-values are then subjected to a $t$-test to establish whether their difference is significant.
 Once the motif is established, it is masked from all sequences and the process begun again.
 
 STEME (Suffix Tree EM for Motif Elicitation) \citep{reid2011steme} is modelled on the well established MEME algorithm \citep{bailey2009meme}, which uses expectation-maximisation (EM), and this short review begins with a brief description of this process. EM is an extremely robust algorithm but each iteration begins with a time-inefficient initialisation step that generates a matrix of each possible motif and fills in the probability of each base by counting the number of times each base occurs in each position in the set of all motifs and dividing by the number of times it could have occurred (= the number of motifs). The expectation step uses the matrix to calculate the probability of each motif, and then this probability is used to weight the count of bases in the matrix (the maximisation step). The expectation and maximisation (E and M) steps are repeated until convergence is reached and the matrix no longer changes. The EM algorithm is subject to local optimas, and the solution adopted by MEME, to rerun the algorithm with different initial starting positions, results in a running time that is quadratic in the number of sequences and is not practicable with large data sets. STEME modifies the EM algorithm by ignoring all W-mers (subsequences of length W) which have a probability less than some threshold. In addition, STEME uses a suffix tree to iterate over all W-mers. Once the initial matrix is built, it is the content rather than the position of the W-mer that is relevant. A suffix tree can then achieve efficiency over the EM algorithm in two ways: firstly, if any two W-mers are identical they do not have to be repeated; and secondly, partial evaluations are calculated for each step of the suffix tree and shared across W-mers below that node in the tree. In contrast, MEME evaluates every base in each W-mer individually. STEME was still the slowest of these algorithms to run, but its authors claim that it is one order faster than the MEME algorithm with the same data \citep{reid2011steme}.
 
-BaMM!motif (Bayesian Markov model or BaMM) \citep{siebert2016bayesian} addresses the issue that position weight matrices (PWMs) assume independence of each base in the motifs \citep{Jayaram2016}, which may not always be true. By using a Markov model, the BaMM algorithm incorporates the probability of prior nucleotides into the final probability of any nucleotide in a particular position. BaMM begins with a 5th order Markov model and uses expectation maximisation to estimate the transition and emission probabilities of these potential motifs. Probable motifs are lengthened using a Bayesian approach of multiplying the probability of the preceding Markov model with the probability of the proposed additional nucleotide. Because the tables of probabilities produced by this algorithm have incorporated a higher order Markov modelling, the authors refer to them as BaMMs rather than as PWMs, although their layout is the same \citep{siebert2016bayesian}.
+BaMM!motif (Bayesian Markov model or BaMM) \citep{siebert2016bayesian} addresses the issue that position weight matrices (PWMs) assume independence of each base in the motifs \citep{Jayaram2016}, which may not always be true. By using a Markov model, the BaMM!motif algorithm incorporates the probability of prior nucleotides into the final probability of any nucleotide in a particular position. BaMM!motif begins with a 5th order Markov model and uses expectation maximisation to estimate the transition and emission probabilities of these potential motifs. Probable motifs are lengthened using a Bayesian approach of multiplying the probability of the preceding Markov model with the probability of the proposed additional nucleotide. Because the tables of probabilities produced by this algorithm have incorporated a higher order Markov modelling, the authors refer to them as BaMMs rather than as PWMs, although their layout is the same \citep{siebert2016bayesian}.
 
 DECOD (DECOnvolved Discriminative motif finder) \citep{huggins2011decod} begins with an enumeration step: given a user-specified motif length $k$, all $k$-mers are extracted from the target and background sequences and arranged into a table of frequencies of occurrence. However, after this step, no further analysis is conducted of the actual sequences - all subsequent analysis is of the $k$-mer counts table and PWMs are formed on the basis of frequency of occurrence in target compared to background sequences. This heuristic approach greatly speeds up the algorithm but bears the cost of losing the context of the $k$-mer. This loss of context may mean that overlapping $k$-mers are counted for the same motif more than once, leading to a convolved PWM that is inaccurate. To overcome this problem DECOD adopts a deconvolution process that removes $k$-mers that form a subset of the true motif  \citep{huggins2011decod}.
 
@@ -219,7 +245,7 @@ The STAMP algorithm \citep{mahony2007stamp} was designed for this purpose. It ha
 
 A disparate number of motifs were detected for each algorithm, with Table \ref{motif_summary} outlining potential causes for these observed differences. The algorithms also varied in the statistical details provided to support their findings, as described in Table \ref{statisticaldetails}.
 
-\begin{table}
+\begin{table}[!htb]
 \centering
 \caption{Summary of motif detection algorithm properties.}\label{motif_summary}
 \begin{tabular}{p{2cm}p{5cm}p{2cm}p{6cm}}
@@ -230,7 +256,7 @@ DREME & Required & 15 & Stops finding motifs once a minimum threshold is reached
 HOMER & Optional & Default 25 & Finds 25 motifs for every length motif requested. Since 3 lengths were default, 75 motifs were returned\\
 STEME & Required & 20 & Always finds the requested number of motifs, but often reports e-values above any useful threshold\\
 DECOD & Required & 20 & Does not find requested number of motifs, but no information supplied in the documentation to explain any thresholds\\
-BaMM & No options & No default & No information provided regarding enrichment thresholds. Varying numbers of motifs resulted, but always with useful e-values\\
+BaMM!motif & No options & No default & No information provided regarding enrichment thresholds. Varying numbers of motifs resulted, but always with useful e-values\\
 MotifRG & Optional & 20	& Has threshold minimum fraction of target/background sequences (=0.01) and minimum fold change of motif in target Vs background (=1.3)\\
 \bottomrule[0.2em]
 \end{tabular}
@@ -242,14 +268,13 @@ MotifRG & Optional & 20	& Has threshold minimum fraction of target/background se
 \caption{Comparison of statistical details for each motif detection algorithm}\label{statisticaldetails}
 \begin{tabular}{p{0.1\linewidth}p{0.2\linewidth}p{0.2\linewidth}p{0.4\linewidth}}
 \toprule[0.2em]
-Algorithm & Enrichment & $p$-value/$e$-value & Other details\\
-& Calculation & provided &\\ 
+Algorithm & Enrichment Calculation & $p$-value/$e$-value provided & Other details\\
 \midrule[0.1em]
-DREME & Fishers Exact Test & p-values/e-values & None\\
+DREME & Fishers Exact Test & $p$-values/$e$-values & None\\
 HOMER & Cumulative binomial distribution & uncorrected $\;\;\;\;\;\;$ $p$-values & Provides the number of target and background sequences that contain the motif\\
 STEME & Not provided & $e$-values & Provides target and background numbers within mass of log data (difficult to locate)\\
 DECOD & $z$-values & $e$-values & $e$-values only provided for the GUI-version, not for the terminal version\\
-BaMM & Log-odds score & $e$-values & Varying numbers of motifs produced with significant $e$-values. Documentation states that threshold is $p<1.0$, but this is not reflected in results, which have very small $e$-values\\
+BaMM! & Log-odds score & $e$-values & Varying numbers of motifs produced with significant $e$-values. Documentation states that threshold is $p<1.0$, but this is not reflected in results, which have very small $e$-values\\
 motifRF & Wald test & Not provided & None\\
 \bottomrule[0.2em]
 \end{tabular}
@@ -260,17 +285,17 @@ Running the algorithms on each subset of the data resulted in a set of motifs fo
 
 No strong differences emerged in the results from the four groups (exon, intron, promoter, and intergenic). Since the purpose of the pilot study was to evaluate the algorithms, rather than to do an in depth study of motifs found and associated transcription factors, a brief summary will be provided of results from one group only: the exon set of sequences. 
 
-The six different algorithms returned a total of 770 motifs in the exon sequences, illustrated in the circular cladogram developed using Evolview tree viewing software  \citep{He2016}. Although the number of motifs means that the labelling on the cladogram is not easily distinguishable, the colouring provides an illustration of the number and spread of motifs found by each algorithm. In the exon sequences, HOMER found the most motifs, with good variability. STEME, DECOD and DREME also achieved a good spread, but reported relatively few motifs. However, in the case of DREME, this paucity of motifs seemed to be due to the use of the website rather than the downloaded version of the motif finding tool, since a later check using the downloaded version returned a large number of motifs. BaMM also achieved a good spread of a large number of motifs. RGMotif did not perform well, with only a few motifs all clumped together, bearing no relationship to motifs found by other algorithms.
+The six different algorithms returned a total of 770 motifs in the exon sequences, illustrated in the circular cladogram developed using Evolview tree viewing software  \citep{He2016}. Although the number of motifs means that the labelling on the cladogram is not easily distinguishable, the colouring provides an illustration of the number and spread of motifs found by each algorithm. In the exon sequences, HOMER found the most motifs, with good variability. STEME, DECOD and DREME also achieved a good spread, but reported relatively few motifs. However, in the case of DREME, this paucity of motifs seemed to be due to the use of the website rather than the downloaded version of the motif finding tool, since a later check using the downloaded version returned a large number of motifs. BaMM!motif also achieved a good spread of a large number of motifs. RGMotif did not perform well, with only a few motifs all clumped together, bearing no relationship to motifs found by other algorithms.
 
 \begin{figure}[htbp] 
      \includegraphics[width= \textwidth]{exon_pilot_cardiogram.pdf} 
     \caption{{\bf Circular cladogram of 770 exon motifs from Evolview tree viewing software \citep{He2016} }. 
-    The cladogram depicts motifs detected from DREME (red), HOMER (blue), BaMM (yellow), MotifRG (green), STEME (purple)
-    and DECOD (orange). Motifs closer in the plot have motif sequences that a more similar.}
+    The cladogram depicts motifs detected from DREME (red), HOMER (blue), BaMM!motif (yellow), MotifRG (green), STEME (purple)
+    and DECOD (orange). Motifs closer in the plot have motif sequences that are more similar.}
     \label{fig: exon_cladogram}
 \end{figure}
 
-Using the JASPAR data base, the STAMP algorithm was able to match all of the motifs as potential binding sites for transcription factors. It is often the case that a single transcription factor has many binding sites. For this reason the 770 motifs were identified as binding sites for 99 transcription factors, with more than half the motifs identified as potential binding sites for a subset of just 17 transcription factors, as illustrated in Table \ref{fig: motif_tf_summary_exons}. *****NEED TO FORMAT THIS TABLE IN THE FORMAT OF OTHER TABLES
+Using the JASPAR data base, the STAMP algorithm was able to match all of the motifs as potential binding sites for transcription factors. It is often the case that a single transcription factor has many binding sites. For this reason the 770 motifs were identified as binding sites for 99 transcription factors, with more than half the motifs identified as potential binding sites for a subset of just 17 transcription factors, as illustrated in Table \ref{fig: motif_tf_summary_exons}. 
 
 
 \begin{table}[!ht]
@@ -303,16 +328,16 @@ Pax4 & 15 & 385\\
 \newpage
 It should be noted that the $p$-values for these matches were not subjected to any Bonferroni correction. In the larger study, this correction was implemented, resulting in a much smaller number of matched motifs and a large number of motifs unmatched to a transcription factor.
 
-Enrichment values for motifs found in eQTL sequences compared to the null sequences are provided in Table \ref{motif_evalue_summary_exons}. These enrichment values are reported as $e$-values by all algorithms apart from HOMER, whose enrichment values are reported as $p$-values. As mentioned previously, if an $e$-value $< 0.01$, the $e$-value is considered to be identical with the $p$-value \citep{Altschul}. As illustrated, many values found by STEME (shaded yellow) are at odds with those found by other algorithms. As mentioned previously, RGmotif did not provide enrichment values and so is missing from this table. 
+Enrichment values for motifs found in eQTL sequences compared to the null sequences are provided in Table \ref{motif_evalue_summary_exons}. These enrichment values are reported as $e$-values by all algorithms apart from HOMER, whose enrichment values are reported as $p$-values. As mentioned previously, if an $e$-value $< 0.01$, the $e$-value is considered to be identical with the $p$-value \citep{NCBI2006}. As illustrated, many values found by STEME are at odds with those found by other algorithms. As mentioned previously, RGmotif did not provide enrichment values and so is missing from this table. 
 
 \begin{table}[!ht]
 \centering
-\caption{TFs found by all algorithms with associated E-Values, ordered by DREME E-Values in pilot exon sequences (NMF = No motif found)}\label{motif_evalue_summary_exons}
+\caption{TFs found by all algorithms with associated enrichment $e$-values, ordered by DREME $e$-values in pilot exon sequences (NMF = No motif found)}\label{motif_evalue_summary_exons}
 \begin{tabular}{p{0.15\linewidth}p{0.15\linewidth}p{0.15\linewidth}p{0.15\linewidth}p{0.15\linewidth}p{0.17\linewidth}}
 \toprule[0.2em]
-Exon TF & Homer $p$-value & Dreme $e$-value & Steme $e$-value & Decod $e$-value & BaMM $e$-value\\ 
+Exon TF & Homer $p$-value & Dreme $e$-value & Steme $e$-value & Decod $e$-value & BaMM!motif $e$-value\\ 
 \midrule[0.1em]
-E74A&1.00E-155&1.80E-004&6.77E+259&1.50E-003&4.84E-034\\
+E74A&1.00E-155&1.80E-004& 6.77E+259&1.50E-003&4.84E-034\\
 Snail&1.00E-085&1.70E-002&1.12E+033&1.35E-003&5.99E-036\\
 TFAP2A&1.00E-096&1.30E-021&6.69E+022&2.65E-003&1.31E-043\\
 ABI4&1.00E-101&1.30E-021&6.69E+022&1.35E-003&2.72E-051\\
@@ -337,7 +362,7 @@ No further analysis is provided of these results, as the purpose of the pilot st
 The pilot study suggests that the two algorithms HOMER and BaMM!motif appear to have the most extensive coverage of motif binding sites. The recently published BaMM!motif algorithm is particularly impressive, given the fine tuning of its motifs, unlike HOMER, whose motifs are frequently clumped into broad clusters. Both these motif finding algorithms have high computational efficiency making them well suited to the large sequence analysis. DREME is also 
 efficient, but fails to find some motifs that are found by every other algorithm. However, with further analysis, this proved to be due to the use of the website version of the software during the pilot study. The use of the downloaded version led to motif discovery comparable to the HOMER algorithm. DECOD was computationally time consuming and did not report many motifs. STEME was computationally inefficient, and reported $e$-values that differed from those reported by the other algorithms. Finally, motifRG seemed to miss many motifs and did not report the significance of those it found, which were, additionally, clumped together, failing to align with any of the motifs found by other algorithms. 
 
-On the basis of this pilot study, the algorithms chosen for the main study were HOMER, BaMM! and DREME.
+On the basis of this pilot study, the algorithms chosen for the main study were HOMER, BaMM!motif and DREME.
 
 
 \subsection{Moving from 200 kb sequences to larger sequences}
@@ -357,7 +382,7 @@ Figure \ref{fig: 100kbOverlaps}(a) provides a histogram (by chromosome) of the p
 \end{figure}  
 
 
-For 40KB sequences, the percentage of eQTL sequences that overlapped with null sequences by chromosome, with no account taken on the size of the overlap 
+For 40KB sequences, the percentage of eQTL sequences that overlapped with null sequences by chromosome, with no account taken of the size of the overlap, 
 was approximately 20 percent. Only one chromosome had more than 30 percent of sequences overlapping with null sequences, although all chromosomes had at least ten percent of their sequences with some overlap. Only one chromosome had more than 15 percent of its sequences with 50 percent overlap or more. For 10 kb sequences, the overlap is substantially reduced. A maximum of eight percent of sequences in any chromosome experience any overlap with on average 
 four percent of the sequences having overlap greater than 25 percent on average across the genome.
 
@@ -377,13 +402,13 @@ This analysis indicated that using sequences of length 2001 base pairs is a good
 \section{Large scale study} 
 \subsection{Materials and methods}
 
-The main study used HOMER  \citep{heinz2010simple}, BaMM! \citep{siebert2016bayesian} and DREME \citep{bailey2011dreme} motif algorithms to analyse 10,499 genomic sequences centred at the just the \emph{cis}-eQTLs discovered in \citet{lloyd2017genetic}. Only the \emph{cis}-eQTL were used in the main study as  \emph{cis} gene regulation is well understood relative to  \emph{trans} regulation in the genomics literature and as this was an
-exploratory study we did not want the added complexity that \emph{trans} gene regulations entails although we believe it warrants scientific
+The main study used HOMER  \citep{heinz2010simple}, BaMM! \citep{siebert2016bayesian} and DREME \citep{bailey2011dreme} motif algorithms to analyse 10,499 genomic sequences centred at the \emph{cis}-eQTLs discovered in \citet{lloyd2017genetic}. Only the \emph{cis}-eQTL were used in the main study as  \emph{cis} gene regulation is well understood relative to  \emph{trans} regulation in the genomics literature. As this was an
+exploratory study, \emph{trans} gene regulations would have added an unwanted complexity, although it warrants scientific
 investigation. The null sequences were generated using 2 kb sequences centred around a random sample of 10,499 null variants from the \citet{lloyd2017genetic} gene expression study. 
 
 As for the pilot study, all sequences were constructed using the hg19 reference genome \citep{Lander2001}. An R program was written drawing on sequence information provided by the `BSgenome.Hsapiens.UCSC.hg19' package \citep{bsghg19}. Because \emph{cis}-eQTLs can regulate more than one gene the original 11,204 \emph{cis}-eQTLs contained repeats; resolving these led to 10,499 \emph{cis}-eQTLs for sequence construction. The same number of null sequences, centred on a random selection of non-eQTL variants, were also produced. The R program created \texttt{bed} files, which were used for HOMER annotation data, and \texttt{fasta} files, which were used as target and background by the motif finding algorithms.
 
-The following sections detail the parameters that were used as input for each of the algorithms, and the output of the algorithm.
+The following section details the parameters that were used as input for each of the algorithms, and the output of the algorithm.
 
 \subsubsection{Detailed description of application of DREME, HOMER and  BaMM!motif algorithms}
 
@@ -400,9 +425,9 @@ Options used were:
 \item the positive sequence file; 
 \item the negative sequence file
 \end{itemize}
-The default motif $E-value$ of 0.05 was used as the threshold.
+The default motif $e$-value of 0.05 was used as the threshold.
 
-As output, DREME provides two main files: the PWM file of motifs, and an html file listing all motifs as sequence logos, with both an e-value and an `unerased' e-value which is calculated without erasing sites of previously found motifs. The html file provides further information which includes the number of target and background sequences that contain the motif, together with the corresponding $p$-value and e-value (calculated by multiplying the $p$-value by the number of motifs found). The $p$-value was calculated for each motif using Fisher's Exact Test for enrichment of the motif in the positive sequences.
+As output, DREME provides two main files: the PWM file of motifs, and an html file listing all motifs as sequence logos, with both an $e$-value and an `unerased' $e$-value which is calculated without erasing sites of previously found motifs. The html file provides further information which includes the number of target and background sequences that contain the motif, together with the corresponding $p$-value and $e$-value (calculated by multiplying the $p$-value by the number of motifs found). The $p$-value was calculated for each motif using Fisher's Exact Test for enrichment of the motif in the positive sequences.
 
 As part of the MEME suite, DREME provides opportunity to submit the motif(s) to other algorithms within the MEME suite. These other algorithms include: `Tomtom', which will search for similar known motifs; `MAST' and `FIMO' which will search sequences for known motifs and provide enrichment details; `GOMO' which will identify Gene Ontology terms for the motif; and `SpaMo' which will search for possible transcription factor complexes.
 
@@ -439,7 +464,7 @@ $>$ATGATTCAATTACC	114-ATGATTCAATTACC
 \begin{itemize}
 \item T: number of target sequences with motif, \% of total of total targets
 \item B: number of background sequences with motif, \% of total background
-\item P: final enrichment p-value
+\item P: final enrichment $p$-value
 \end{itemize}
 \item Motif statistics separated by commas: 
 \begin{itemize}
@@ -454,12 +479,12 @@ $>$ATGATTCAATTACC	114-ATGATTCAATTACC
 
 HOMER also tries to match each de novo motif found using its data bank of transcription factors, and provides a number of files describing the statistical details of each matched motif with its possible transcription factor.
 
-HOMER has an extensive set of webpages describing different ways in which its algorithms can be used. This includes a caution that only motifs that are `very enriched' should be considered to be robust - HOMER uses a cumulative binomial distribution to calculate $p$-values and suggests a cut-off of $p$-value $ <1\times10^{-50}$ for robust significance. This cut-off was adopted throughout this project. 
+HOMER has an extensive set of webpages describing different ways in which its algorithms can be used. This includes a caution that only motifs that are `very enriched' should be considered to be robust - HOMER uses a cumulative binomial distribution to calculate $p$-values and suggests a threshold $p$-value $ <1\times10^{-50}$ for robust significance. This threshold was adopted throughout this project. 
 
-As described above, the motif header in the PWMs provides the average position of the motif together with its standard deviation. Further information can be recovered using another tool that is part of the HOMER software. The `annotatePeakspl' command has options that can be used to recover general genomic information about the set of sequences, as well as the specific position of the motif in each sequence. An option that was used in this project is the `-hist' option, which provides data that can be used to create a graph of the distance of the motif from the centre of the sequence over the set of 10,499 sequences.
+As described above, the motif header in the PWMs provides the average position of the motif together with its standard deviation. Further information can be recovered using another tool that is part of the HOMER software. The `annotatePeaks.pl' command has options that can be used to recover general genomic information about the set of sequences, as well as the specific position of the motif in each sequence. An option that was used in this project is the `-hist' option, which provides data that can be used to create a graph of the distance of the motif from the centre of the sequence over the set of 10,499 sequences.
 
-\paragraph{BaMM parameters and output}\mbox{}\\
-BaMM runs from the terminal using the following command:
+\paragraph{BaMM!motif parameters and output}\mbox{}\\
+BaMM!motif runs from the terminal using the following command:
 
 \texttt{BaMMmotif $<$output directory$>$ $<$positive sequence file$>$ [options]}
 
@@ -470,9 +495,9 @@ Options used were:
 \item --maxPValue: the maximum $p$-value of the PWMs (The maximum P-value was changed from the default of 1 to $p<0.05$, but applying this option seemed to have no affect on the results obtained)
 \end{itemize}
 
-As output BaMM provides a set of matrices which the writers of the algorithm suggest be referred to as a set of `BaMMs' rather than PWMs. Each `BaMM' is preceded by a header listing the number of target sequences containing the motif and the $e$-value. This file follows the standardised MEME formatting so that it could be submitted directly to the MEME suite for further processing if desired.
+As output BaMM!motif provides a set of matrices which the writers of the algorithm suggest be referred to as a set of `BaMMs' rather than PWMs. Each `BaMM' is preceded by a header listing the number of target sequences containing the motif and the $e$-value. This file follows the standardised MEME formatting so that it could be submitted directly to the MEME suite for further processing if desired.
 
-In addition to the `BaMM' file, the BaMM algorithm provides a PWM file created using a zero order Markov model. It provides a `MotifFile.txt' which lists each motif as a sequence, together with its e-value and the number of target sequences containing the motif (this is the same information as is provided in the header to each `BaMM'). A very long file (with the extension `Pvals.txt') lists, for every motif, each sequence that contains the motif (as a sequence number), the start position of the motif in the sequence, the strand (+ or -) and the $p$-value of the individual motif in the sequence. The $p$-values were calculated using the log-odds score calculated by dividing the probability of the motif in the positive sequences by the probability of the motif in the background sequences \citep{siebert2016bayesian}. Finally, another file with the extension `sequence.txt' provides a key that links the sequence number listed in the `Pvals.txt' file to the relevant eQTL provided in the original fasta file submitted to the algorithm. 
+In addition to the `BaMM' file, the BaMM!motif algorithm provides a PWM file created using a zero order Markov model. It provides a `MotifFile.txt' which lists each motif as a sequence, together with its $e$-value and the number of target sequences containing the motif (this is the same information as is provided in the header to each `BaMM'). A very long file (with the extension `Pvals.txt') lists, for every motif, each sequence that contains the motif (as a sequence number), the start position of the motif in the sequence, the strand (+ or -) and the $p$-value of the individual motif in the sequence. The $p$-values were calculated using the log-odds score calculated by dividing the probability of the motif in the positive sequences by the probability of the motif in the background sequences \citep{siebert2016bayesian}. Finally, another file with the extension `sequence.txt' provides a key that links the sequence number listed in the `Pvals.txt' file to the relevant eQTL provided in the original fasta file submitted to the algorithm. 
 
 \subsubsection{Computer resources}
 
@@ -480,7 +505,7 @@ All algorithms were run and computations performed on a personal computer (Dell 
 \begin{itemize}
 \item HOMER: took approximately 6 hours and required no extra memory. Other tasks could be performed whilst HOMER ran in the background.
 \item DREME: took approximately 15 hours and required no extra memory, but other tasks were slowed down considerably.
-\item BaMM: took approximately 8 hours to produce almost all the data, but then an extra 24 hours to produce the final log likelihood. This was not necessary information, so the program was concluded manually (using `Control+C') once all other files were produced. The program required an extra 32GB of virtual memory, and no other tasks could be performed whilst it was running.
+\item BaMM!motif: took approximately 8 hours to produce almost all the data, but then an extra 24 hours to produce the final log likelihood. This was not necessary information, so the program was concluded manually (using `Control+C') once all other files were produced. The program required an extra 32GB of virtual memory, and no other tasks could be performed whilst it was running.
 \end{itemize}
 
 
@@ -490,10 +515,10 @@ One concern with the use of computational methods for de novo motif detection is
 \begin{enumerate}
 \item Two types of analysis were performed with respect to the null sequences:
 \begin{enumerate}
-\item The first analysis used the algorithms to check whether the null sequences contained any motifs that were enriched in the null sequences compared to the eQTL sequences. It was expected that few, relatively unimportant, motifs would be found. This analysis was formed under the biological hypothesis that motifs are more likely to be harboured close to functional parts if the genome, which may be false.
+\item The first analysis used the algorithms to check whether the null sequences contained any motifs that were enriched in the null sequences compared to the eQTL sequences. It was expected that few, relatively unimportant, motifs would be found. This analysis was formed under the biological hypothesis that motifs are more likely to be harboured close to functional parts of the genome, which may be false.
 \item The second analysis was a more genuine check of the algorithms' capacity to report false positives. After a random split of all null sequences into two groups, each algorithms checked for enriched motifs in the first group compared to the second group. It was expected that the two groups would be generally similar and that no motifs would be found. 
 \end{enumerate}
-\item A further check used the AME algorithm \citep{Buske2010} to provide enrichment values for all significant motifs found by the DREME, HOMER and BaMM algorithms. 
+\item A further check used the AME algorithm \citep{Buske2010} to provide enrichment values for all significant motifs found by the DREME, HOMER and BaMM!motif algorithms. 
 \end{enumerate}
 
 \subsubsection{Analysis of the algorithm results}
@@ -501,7 +526,7 @@ One concern with the use of computational methods for de novo motif detection is
 The motif files were formatted and subjected to the STAMP algorithm, which performed the following procedure:
 \begin{enumerate}
 \item Alignment of motifs
-\item Creation of a cladogram to illustrate motifs similarity
+\item Creation of a cladogram to illustrate motif similarity
 \item Matching of motifs to transcription factors using the JASPAR data base \citep{Mathelier2016}
 \end{enumerate}
 
@@ -529,13 +554,13 @@ Table \ref{eQTLmotifNumbers} provides the results of all three algorithms with r
 \multicolumn{3}{c}{All motifs} & & \multicolumn{3}{c}{Motifs with $p$-value$<1\times10^{-50}$}\\
 \cmidrule[0.1em]{1-3}
 \cmidrule[0.1em]{5-7}
-DREME & HOMER & BaMM && DREME & HOMER & BaMM\\
+DREME & HOMER & BaMM!motif && DREME & HOMER & BaMM!motif\\
 114 & 238 & 99 && 44 & 141 & 38\\
 \bottomrule[0.2em]
 \end{tabular}
 \end{table}
 
-A visual examination of the large number of HOMER motifs found that many of the smaller motifs were subsets of the larger motifs. Although masking prevents motif repetition during a single search, the masking is removed for a new search for a motif of a different length. After all motif subsets within the HOMER motifs were removed, the number of significant HOMER motifs was reduced from 141 to 123.
+A visual examination of the large number of HOMER motifs found that some of the smaller motifs were subsets of the larger motifs. Although masking prevents motif repetition during a single search, the masking is removed for a new search for a motif of a different length. After all motif subsets within the HOMER motifs were removed, the number of significant HOMER motifs was reduced from 141 to 123.
 
 Before further analysis of these motifs was conducted, validation of algorithms was conducted using the null sequences. The first check was a search for motifs that were enriched in the null sequences compared to the eQTL sequences. Results of this search are provided in Table \ref{nullMotifNumbers}:
 
@@ -548,16 +573,16 @@ Before further analysis of these motifs was conducted, validation of algorithms 
 \multicolumn{3}{c}{All motifs} & & \multicolumn{3}{c}{Motifs with $p$-value$<1\times10^{-50}$}\\
 \cmidrule[0.1em]{1-3}
 \cmidrule[0.1em]{5-7}
-DREME & HOMER & BaMM && DREME & HOMER & BaMM\\
+DREME & HOMER & BaMM!motif && DREME & HOMER & BaMM!motif\\
 103 & 235 & 278 && 39 & 0 & 168\\
 \bottomrule[0.2em]
 \end{tabular}
 \end{table}
 
-HOMER returned a large number of motifs, but none of them met the stringent cut-off threshold. DREME found approximately the same number of motifs in the null sequences as in the eQTL sequences, and BaMM found many more (168 significant motifs in the null compared to 38 in the eQTL sequences). These results from DREME and BaMM algorithms provide evidence to contradict the hypothesis that null sequences do not harbour motifs. 
+HOMER returned a large number of motifs, but none of them met the stringent cut-off threshold. DREME found approximately the same number of motifs in the null sequences as in the eQTL sequences, and BaMM!motif found many more (168 significant motifs in the null compared to 38 in the eQTL sequences). These results from DREME and BaMM!motif algorithms provide evidence to contradict the hypothesis that null sequences do not harbour motifs. 
 
 
-The BaMM results in the second check show a further unexpected result, where BaMM reported motifs in the null Group A versus null Group B analysis. It was expected that the algorithms should find no significant motifs in this analysis (Table \ref{nullHalfGroups}).
+The BaMM!motif results in the second check show a further unexpected result, where BaMM!motif reported motifs in the null Group A versus null Group B analysis. It was expected that the algorithms should find no significant motifs in this analysis (Table \ref{nullHalfGroups}).
 
 \begin{table}[!htbp]
 \caption{Motifs enriched in null Group A compared to null Group B}
@@ -568,18 +593,18 @@ The BaMM results in the second check show a further unexpected result, where BaM
 \multicolumn{3}{c}{All motifs} & & \multicolumn{3}{c}{Motifs with $p$-value$<1\times10^{-50}$}\\
 \cmidrule[0.1em]{1-3}
 \cmidrule[0.1em]{5-7}
-DREME & HOMER & BaMM && DREME & HOMER & BaMM\\
+DREME & HOMER & BaMM!motif && DREME & HOMER & BaMM!motif\\
 0 & 55 & 237 && 0 & 0 & 132\\
 \bottomrule[0.2em]
 \end{tabular}
 \end{table}
 
-The results for both DREME and HOMER in null Group A versus null Group B analysis are as expected (Table \ref{nullHalfGroups}). DREME found no motifs, whilst HOMER found some motifs at a very low level of significance ($p$-value $>1\times10^{-8}$). However, BaMM reported a large number of motifs. Given this result, the test was repeated for the BaMM algorithm, reversing the groups. BaMM found a similar number of motifs significantly enriched in Group B compared to Group A. Furthermore, the most highly enriched motif for Group A (CTACTAAAAATACAAAA) is also the most highly enriched motif for Group B.
+The results for both DREME and HOMER in null Group A versus null Group B analysis are as expected (Table \ref{nullHalfGroups}). DREME found no motifs, whilst HOMER found some motifs at a very low level of significance ($p$-value $>1\times10^{-8}$). However, BaMM!motif reported a large number of motifs. Given this result, the test was repeated for the BaMM!motif algorithm, reversing the groups. BaMM!motif found a similar number of motifs significantly enriched in Group B compared to Group A. Furthermore, the most highly enriched motif for Group A (CTACTAAAAATACAAAA) is also the most highly enriched motif for Group B.
 
 These analyses motivated a further validation of algorithm enrichment values reported by each algorithm. To this end, the AME algorithm \citep{Buske2010} within the MEME suite  was used to provide discriminative enrichment values for all significant motifs found by all algorithms. The AME algorithm is not able to perform de novo motif detection, but it can provide enrichment values for given motifs. Motifs found by AME to be enriched with a $p$-value$<1\times^{-50}$ were selected for further processing by the STAMP algorithm. Final significant motif figures are provided in Table \ref{ameResults}.
 
 \begin{table}[!htbp]
-\caption{Motifs enriched from eQTL versus null analysis according to AME selection for each of the algorithms.}
+\caption{Motifs enriched in eQTL versus null analysis according to AME selection for each of the algorithms.}
 \label{ameResults}
 \centering
 \begin{tabular}{ccccccc}
@@ -587,29 +612,29 @@ These analyses motivated a further validation of algorithm enrichment values rep
 \multicolumn{3}{c}{Prior to AME selection} & \multicolumn{3}{c}{After AME selection}\\
 \cmidrule[0.1em]{1-3}
 \cmidrule[0.1em]{5-7}
-DREME & HOMER & BaMM && DREME & HOMER & BaMM\\
+DREME & HOMER & BaMM!motif && DREME & HOMER & BaMM!motif\\
 44 & 123 & 38 && 43 & 119 & 28\\
 \bottomrule[0.2em]
 \end{tabular}
 \end{table}
 
 
-As demonstrated in Table \ref{ameResults}, one of the DREME motifs, five of the HOMER motifs, and 10 of the BaMM motifs were discarded due to this process. 
+As demonstrated in Table \ref{ameResults}, one of the DREME motifs, four of the HOMER motifs, and 10 of the BaMM!motif motifs were discarded due to this process. 
 
 This final set of 190 motifs were formatted for STAMP processing and submitted to the STAMP algorithm. Figure \ref{mainStampTree} illustrates the alignment produced by Stamp as a circular cladogram \citep{He2016}, and Figure \ref{treeDetail} provides a zoomed version of a component of this cladogram.   The motif colouring indicates that motifs from each algorithm cluster together with HOMER reporting many more motifs per cluster. However, for each cluster
-there is frequently a DREME and/or BaMM motif present, which gives a qualitative indication that the algorithms are detecting similar motifs (Figures \ref{treeDetail} and \ref{treeDetail}).
+there is frequently a DREME and/or BaMM!motif motif present, which gives a qualitative indication that the algorithms are detecting similar motifs (Figures \ref{mainStampTree} and \ref{treeDetail}).
 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width= 0.8\textwidth]{stampTree.pdf} 
-\caption{{\bf Circular cladogram of Stamp motif alignment.} Detected motifs from HOMER (blue),  DREME (red), and BaMM (green) are clustered due to position weight matrix similarity. }
+\caption{{\bf Circular cladogram of Stamp motif alignment.} Detected motifs from HOMER (blue),  DREME (red), and BaMM!motif (green) are clustered due to position weight matrix similarity. }
 \label{mainStampTree}
 \end{figure}
 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width= 0.6\textwidth]{stampTreeDetail.pdf} 
-\caption{{\bf Zoomed cladogram of Figure \ref{mainStampTree}.} Detected motifs from HOMER (blue),  DREME (red), and BaMM (green) are clustered due to position weight matrix similarity}
+\caption{{\bf Zoomed cladogram of Figure \ref{mainStampTree}.} Detected motifs from HOMER (blue),  DREME (red), and BaMM!motif (green) are clustered due to position weight matrix similarity}
 \label{treeDetail}
 \end{figure}
 
@@ -637,12 +662,12 @@ Given that $190 \times 5 = 950$ transcription factors were provided, the match p
 Table \ref{tfsWithMotifs} lists these nine TFs with best match $p$-values.
 
 \begin{table}[!htbp]
-\caption{{\bf Transcription factors matched to motifs from at least two algorithms.} Reported are the best Stamp transcription factor match probabilities for HOMER, DREME and BaMM. For the reported transcription factors no motif was found (NMF) by either DREME or BaMM.}
+\caption{{\bf Transcription factors matched to motifs from at least two algorithms.} Reported are the best Stamp transcription factor match probabilities for HOMER, DREME and BaMM!motif. For the reported transcription factors no motif was found (NMF) by either DREME or BaMM!motif.}
 \label{tfsWithMotifs}
 \centering
 \begin{tabular}{cccc}
 \toprule[0.2em]
-Transcription factor & HOMER & DREME & BaMM\\
+Transcription factor & HOMER & DREME & BaMM!motif\\
 \midrule[0.1em]
 IRF1             & $8.15\times10^{-8}$ & NMF & $3.74\times10^{-5}$\\
 Snail             & $1.41\times10^{-8}$ & $4.23\times10^{-11}$ & NMF\\
@@ -680,7 +705,7 @@ ESR1       &  2\\
 \end{tabular}
 \end{table}
 \newpage
-To more accurately estimate the number of binding sites per sequence per TF, the HOMER annotation software was used as described above (3.1.4 Analysis of the algorithm results). Motifs found by both DREME and BaMM were formatted appropriately to be submitted for annotation by HOMER, as well as the HOMER motifs. The annotation algorithm returns a table of data recording the occurrence of each motif for each of the 10,499 sequences. A simple program was written to add and record the occurrence of all matching motifs for each TF, for each algorithm. This process provides an estimate of the abundance of binding sites for TFs across all sequences. Initially, abundance was measured for all TFs, but the process was then repeated for the nine robust TFs. 
+To more accurately estimate the number of binding sites per sequence per TF, the HOMER annotation software was used as described above (3.1.4 Analysis of the algorithm results). Motifs found by both DREME and BaMM!motif were formatted appropriately to be submitted for annotation by HOMER, as well as the HOMER motifs. The annotation algorithm returns a table of data recording the occurrence of each motif for each of the 10,499 sequences. A simple program was written to add and record the occurrence of all matching motifs for each TF, for each algorithm. This process provides an estimate of the abundance of binding sites for TFs across all sequences. Initially, abundance was measured for all TFs, but the process was then repeated for the nine robust TFs. 
 
 Figure \ref{heatmap} shows the abundance of all motifs over all sequences, and Figure \ref{heatmap2} illustrates the abundance of motifs matching the nine robust TFs over all sequences. As illustrated in Figure \ref{heatmap2}, a relatively large number of motifs that match IRF are present in more than half of the 10,499 sequences, but motifs matching Snail, DeltaEF1 and ESR1 are present in moderate to high numbers over all sequences. 
 
@@ -699,7 +724,7 @@ Figure \ref{heatmap} shows the abundance of all motifs over all sequences, and F
 \label{heatmap2}
 \end{figure}
 
-Although these top transcription factors bind to motifs that are enriched in eQTL sequences, they do exist in the null sequences. The process described above, to detect the abundance of TF binding sites across all eQTL sequences, was repeated for the same TF binding sites across the null sequences. A simple summation of binding sites for a TF over all sequences provided the total number of binding sites for each transcription factor for both the eQTL and null sequences (Figure \ref{allMotifComparison}). Table \ref{TFnos} provides the count of all binding sites for the nine robust TFs in both eQTL and null sequences, and Figure \ref{top9Comparison} provides a graphical illustration of this information.
+Although these top transcription factors bind to motifs that are enriched in eQTL sequences, they do exist in the null sequences. The process described above, to detect the abundance of TF binding sites across all eQTL sequences, was repeated for the same TF binding sites across the null sequences. A simple summation of binding sites for a TF over all sequences provided the total number of binding sites for each transcription factor for both the eQTL and null sequences (Figure \ref{allMotifComparison}). Table \ref{TFnosEqtl} provides the count of all binding sites for the nine robust TFs in both eQTL and null sequences, and Figure \ref{top9Comparison} provides a graphical illustration of this information.
 
 
 \begin{figure}[!htbp]
@@ -711,7 +736,7 @@ Although these top transcription factors bind to motifs that are enriched in eQT
 
 \begin{table}[!htbp]
 \caption{Estimated total number of binding sites for nine TFs enriched in eQTL sequences over both eQTL and null sequences}
-\label{TFnos}
+\label{TFnosEqtl}
 \centering
 \begin{tabular}{cccccccccc}
 \toprule[0.2em]
@@ -748,11 +773,11 @@ An underlying hypothesis of this project is that eQTL flanking sequences will be
 \label{nullDistance}
 \end{figure}
 
-The incidence of TFs enriched in null sequences for both eQTL and null sequences is provided for the top eight TFs in Table \ref{TFnos}.
+The incidence of TFs enriched in null sequences for both eQTL and null sequences is provided for the top eight TFs in Table \ref{TFnosNull}.
 
 \begin{table}[!htbp]
 \caption{Total number of binding sites for top eight TFs enriched in null sequences over both eQTL and null sequences}
-\label{TFnos}
+\label{TFnosNull}
 \centering
 \begin{tabular}{cccccccccc}
 \toprule[0.2em]
@@ -772,21 +797,20 @@ Although the focus of this section of the report has been on motifs that were st
 \section{Discussion}
 
 
-The correlation of genetic diversity with phenotypic manifestation makes the concept of eQTL mapping very attractive⁠, holding “great promise” as a method to identify causal genetic variants \citep{Pai2015}⁠. However, an understanding of the biological mechanisms by which this diversity regulates gene expression has been challenging \citep{Pai2015, gaffney2013global}�. The aim of this project was to identify, quantify, and characterize DNA motifs that are enriched in sequences centred on eQTLs found in whole blood, compared with sequences centred on variants which have no effect on gene expression, in order to highlight differences between eQTLs and null variants that may contribute to these biological mechanisms. This discussion of results will reflect on the findings of this study, before outlining some caveats that limit these findings. The results have also raised more questions and foci for further study, which will form the final part of this section.
+The correlation of genetic diversity with phenotypic manifestation makes the concept of eQTL mapping very attractive, holding `great promise' as a method to identify causal genetic variants \citep{Pai2015}� . However, an understanding of the biological mechanisms by which this diversity regulates gene expression has been challenging \citep{Pai2015, gaffney2013global} . The aim of this project was to identify, quantify, and characterize DNA motifs that are enriched in sequences centred on eQTLs found in whole blood, compared with sequences centred on variants which have no effect on gene expression, in order to highlight differences between eQTLs and null variants that may contribute to these biological mechanisms. This discussion of results will reflect on the findings of this study, before outlining some caveats that limit these findings. The results have also raised more questions and foci for further study, which will form the final part of this section.
 
 \subsection{Discussion of the results}
 
-The first step in motif detection was the identification of reliable algorithms that can provide results that are valid in their discrimination between eQTL and null sequences. Many algorithms exist which can find motifs de novo. Reviews of these motifs have failed to establish any "gold standard" and \citet{tran2014survey} recommend using more than one algorithm to substantiate results. This study found that the HOMER algorithm was reliable and computationally efficient. Although it found many more motifs than either DREME or BaMM, its results were validated by the AME algorithm. It also offers a useful suite of software to annotate motifs. Although BaMM was a promising algorithm, its detection of motifs in sets of null sequences requires further
-investigation and validation, which motivated a further validation of the motifs detected using other the AME. DREME is part of the well regarded MEME suite, and results indicate that it discriminates between target and background appropriately. DREME also found a substantial number of motifs that were validated by AME, although only four of these were strongly matched to TFs and only two motifs matched TFs that were also bound by motifs found by other algorithms.
+The first step in motif detection was the identification of reliable algorithms that can provide results that are valid in their discrimination between eQTL and null sequences. Many algorithms exist which can find motifs de novo. Reviews of these motifs have failed to establish any "gold standard" and \citet{tran2014survey} recommend using more than one algorithm to substantiate results. This study found that the HOMER algorithm was reliable and computationally efficient. Although it found many more motifs than either DREME or BaMM!motif, its results were validated by the AME algorithm. It also offers a useful suite of software to annotate motifs. Although BaMM!motif was a promising algorithm, its detection of motifs in sets of null sequences requires further investigation and validation, which motivated a further validation of the motifs detected using AME. DREME is part of the well regarded MEME suite, and results indicate that it discriminates between target and background appropriately. DREME also found a substantial number of motifs that were validated by AME, although only four of these were strongly matched to TFs and only two motifs matched TFs that were also bound by motifs found by other algorithms.
 
 The STAMP algorithm proved to be extremely useful in organising data. Its alignment tool provided a useful indication of the validity of different algorithms, in that it illustrated which algorithms found motifs that were similar. A subset of DNA motifs in the region of eQTL are sequence binding sites for transcription factors. The JASPAR database \citep{Mathelier2016} was used by STAMP to match motifs to TFs. This was a convenient tool that allowed identification of TFs strongly matched to the binding sites identified by the motif detection algorithms. 
 
-As part of the validation process, the DREME, HOMER and BaMM algorithms searched for motifs enriched in the sequences flanking null variants compared to the eQTL sequences. It was expected that a small number of unimportant motifs would be found. Although HOMER found no significant results, the overall results contradicted the expectation of small numbers of unimportant motifs, with a total of 46 significant motifs detected by DREME and BaMM, and validated by AME. Two differences emerged between these motifs enriched in sequences flanking null variants (termed null motifs) and motifs enriched in eQTL sequences (termed eQTL motifs):
+As part of the validation process, the DREME, HOMER and BaMM!motif algorithms searched for motifs enriched in the sequences flanking null variants compared to the eQTL sequences. It was expected that a small number of unimportant motifs would be found. Although HOMER found no significant results, the overall results contradicted the expectation of small numbers of unimportant motifs, with a total of 46 significant motifs detected by DREME and BaMM!motif, and validated by AME. Two differences emerged between these motifs enriched in sequences flanking null variants (termed null motifs) and motifs enriched in eQTL sequences (termed eQTL motifs):
 \paragraph{Abundance:} 
 The null sequences showed fewer instances of motifs. Motifs enriched in null sequences compared with eQTL sequences had fewer instances than motifs enriched in eQTL sequences. The most abundant null-enriched transcription factor (SOX9) has a total of 24,770 binding sites over all 10,499 null sequences, compared to 36,440 binding sites for the top eQTL-enriched transcription factor (IRF1) in eQTL sequences. 
 
 \paragraph{Distance from the variant:} 
-Distance from the variant may be a factor in determining disruption of the binding site. Null-enriched TFs had binding sites that tended to cluster some distance from the null variant *****************USUALLY NOT ALLOWED TO REFERENCE FIGRUES AND TABLES IN THE DISCUSSION************. Binding sites for eQTL-enriched TFs were more strongly clustered around the eQTL than around the null variant.
+Distance from the variant may be a factor in determining disruption of the binding site. Null-enriched TFs had binding sites that tended to cluster some distance from the null variant. Binding sites for eQTL-enriched TFs were more strongly clustered around the eQTL than around the null variant.
 
 Strong matches were found for nine TFs with binding sites found by at least two algorithms. Descriptions of four of these TFs follow \citep{Weizmann2018}:
 
@@ -806,11 +830,12 @@ Acts as a transcriptional repressor. Inhibits interleukin-2 (IL-2) gene expressi
 
 This gene encodes an estrogen receptor, a ligand-activated transcription factor composed of several domains important for hormone binding, DNA binding, and activation of transcription. The protein localizes to the nucleus where it may form a homodimer or a heterodimer with estrogen receptor 2. Estrogen and its receptors are essential for sexual development and reproductive function, but also play a role in other tissues such as bone. Estrogen receptors are also involved in pathological processes including breast cancer, endometrial cancer, and osteoporosis.
 
+
 The above TF descriptions are supportive of their presence in whole blood. Two (IRF1 and DeltaEF1) are clearly associated with the immune system. DeltaEF1 can also induce epithelial-mesenchymal transition (EMT), which encourages metastasis. It is generally associated with Snail, which plays a similar role \citep{Bourcy2018}. Snail also associates with SP1 and EGR1 to activate CDKN2A, which plays the opposite role of tumour repression \citep{Hu2010}. SP1 was strongly matched to one binding site enriched in eQTL sequences.
 
 ESR1 is another TF that has been targeted for its role in the spread of cancer. Mutations in the binding domain of ESR1 have been implicated in hormone resistance and anti-estrogen therapies with respect to breast cancer \citep{Griffith2017}
 
-The association of Snail, SP1 and EGR1, is an example of TFs working as a complex rather than as single activators or repressors of genes. Although no binding sites were found for EGR1, \citet{Hu2010} found that the overlapping EGR1/SP1 site (ATCACAGCGGACAGGTATCGGAGCCTAAGGGGG) was the significant motif. A search for this sequence amongst the eQTL flanking regions using FIMO (part of the MEME suite) \citep{Grant2011} found 78,556 motif occurrences with  $p$-value $< 0.001$, maximum $q$-value = 0.515. The $q$-value is an indication of the false discovery rate if the occurrence is accepted as significant, which peans that 40,456 of the 78,556 motif occurrences are likely to be false positives. This leaves approximately 38,000 occurrences of the motif over the full set of sequences.
+The association of Snail, SP1 and EGR1 is an example of TFs working as a complex rather than as single activators or repressors of genes. Although no binding sites were found for EGR1, \citet{Hu2010} found that the overlapping EGR1/SP1 site (ATCACAGCGGACAGGTATCGGAGCCTAAGGGGG) was the significant motif. A search for this sequence amongst the eQTL flanking regions using FIMO (part of the MEME suite) \citep{Grant2011} found 78,556 motif occurrences with  $p$-value $< 0.001$, maximum $q$-value = 0.515. The $q$-value is an indication of the false discovery rate if the occurrence is accepted as significant, which means that 40,456 of the 78,556 motif occurrences are likely to be false positives. This leaves approximately 38,000 occurrences of the motif over the full set of sequences.
 
 The importance of TF complexes was highlighted by \citet{Jolma2015} and motivated the search for all occurrences of all TFs over all sequences, in order to focus attention on the combinations of TFs in the same sequences. Visualisation of these combinations was accomplished through the heatmaps, which showed a number of combination of TFs that appear to be most abundant in the same sequences. Binding sites for Snail, deltaEF1,  ESR1, RREB1 and SP1 appear in moderate to low numbers over all sequences, but the combination of ID1, MEF2A, Broad-complex{\_}1, SQUA, and, to a lesser extent, IRF1, IRF2, Dorsal{\_}1 and Fos, have the same group of sequences exhibiting no or few binding sites. However, some of these TFs are bound by the same motifs, which provides an alternative explanation for the similarity of their sequence profiles.
 
@@ -822,11 +847,12 @@ It was initially expected that motifs found would form binding sites for known T
 There are a number of caveats on this research which should be taken into account when considering the results:
 \begin{enumerate}
 \item The description of the algorithms (either in academic journals or through web pages) are not complete. To a large extent the methods are black boxes, and possible causes of substantial confounding, as well as the convergence properties of the algorithms are left unexplained.
-\item In particular, the strong tendency of the BaMM algorithm to provide false positives, as evidenced by the null versus null study, is of substantial concern. In this study other algorithms were used to validate results.
+\item In particular, the strong tendency of the BaMM!motif algorithm to provide false positives, as evidenced by the null versus null study, is of substantial concern. In this study other algorithms were used to validate results.
 \item The null set does not take into account potentially confounding characteristics such as LD or gene content. 
 \item The length of the sequences: the 2001 bp length chosen for sequences was based on the need to avoid overlaps. However, another simple strategy would be to only use eQTLs located on every second chromosome, with null variants located on the alternative chromosomes. This would avoid any possibility of overlap for any length sequence. Longer sequences would increase the likelihood of inclusion of the causal variant, which may be located as far away as 30kb from the known eQTL \citep{wu2018integrative}.
 \item The set of motifs that have no match to TFs require further validation.
-\item Some of the TFs that formed strong matches to motifs share binding sites. These shared binding sites may explain the similarity in sequence abundance profiles rather than represent actual combinatory events.
+\item Some of the TFs that formed strong matches to motifs share binding sites. The similarity in sequence abundance profiles may be due to these shared binding sites rather than represent actual combinatory events.
+\item The HOMER program that searched for motif occurrence per sequence is a ZOOPS model, returning either zero or one occurrence per sequence. Motif abundance is therefore based on a maximum of one occurrence per sequence, which may be misleading if many instances of the motif occur on a single sequence.
 \end{enumerate}
 
 \subsection{Directions for future research}
@@ -840,14 +866,14 @@ Secondly, four findings of this research provide foci for validation and more in
 
 \item The set of transcription factors strongly matched to motifs found by the algorithms might be subjected to more careful analysis to identify known complexes whose binding sites are affected by the eQTL. Shared and/or overlapping binding sites might be identified which may account for some unmatched motifs.
 
-\item Visualisation of TF abundance across all sequences provided evidence of a broad set of sequences that contain very few binding sites for known TFs. These sequences might be isolated for further study of their set of enriched motifs, which, presumably, are located amongst the set of unmatched motifs.
+\item Visualisation of TF abundance across all sequences provided evidence of a broad set of sequences that contain zero or very few binding sites for known TFs. These sequences might be isolated for further study of their set of enriched motifs, which, presumably, are located amongst the set of unmatched motifs.
 
 \item The set of unmatched motifs requires further validation through algorithms such as FIMO \citep{Grant2011}. Little has been accomplished with this resource within this study, but this set of potential binding sites may well prove to be a rich source of alternative mechanisms for gene regulation. 
 \end{enumerate}
 
 \section{Conclusion}
 
-This project succeeded in its aim of identifying two de novo motif finding algorithms, DREME and HOMER, that can reliably detect and organise motifs enriched in target sequences compared to background sequences. The inclusion of a less robust algorithm, BaMM, was offset by further validation of results through a motif enrichment algorithm, AME. The application of these algorithms resulted in the identification of a number of transcription factors in the vicinity of eQTLs, which may partially explain the mechanism by which these eQTLs affect the regulation of their target genes. The identified TFs include functions affecting the immune system, metastasis and the growth of tumours. Comparison with the same binding sites in sequences associated with null variants indicated that these TFs were less abundant in null sequences and exhibited less tendency to cluster in the proximity of the null variant. 
+This project succeeded in its aim of identifying two de novo motif finding algorithms, DREME and HOMER, that can reliably detect and organise motifs enriched in target sequences compared to background sequences. The inclusion of a less robust algorithm, BaMM!motif, was offset by further validation of results through a motif enrichment algorithm, AME. The application of these algorithms resulted in the identification of a number of transcription factors in the vicinity of eQTLs, which may partially explain the mechanism by which these eQTLs affect the regulation of their target genes. The identified TFs include functions affecting the immune system, metastasis and the growth of tumours. Comparison with the same binding sites in sequences associated with null variants indicated that these TFs were less abundant in null sequences and exhibited less tendency to cluster in the proximity of the null variant. 
 
 The findings of this study are limited by the length of the sequences, which may mean that the causal variant may not have been included. Further work should focus on longer sequences, with more attention paid to the configuration of the null set.
 
