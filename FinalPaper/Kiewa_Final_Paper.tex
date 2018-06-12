@@ -64,7 +64,7 @@
 \clearpage
 \section{Introduction}
 
-An important complex trait that differs amongst individuals is the level of gene expression, obtained by measuring the amount of mRNA present in specific tissues. The class of variants that influence this trait has been labelled expression quantitative trait loci (eQTL). These variants are particularly important to Genome Wide Association (GWA) studies, since they can help to prioritize likely causal variants amongst the SNPs identified by the GWA study, as well as provide some insight into the biological mechanisms used by organisms to influence complex traits and diseases \citep{albert2015role}. \citet{albert2015role} note that the majority of QTL identified by human GWA studies occur in non-coding regions that are not in linkage disequilibrium (LD) with coding exons. It is therefore hypothesised that these QTL influence their targeted gene through regulation of its expression \citep{nica2013expression}. A further hypothesis is that an eQTL and its surrounding region will be enriched in biologically active DNA sequence motifs which will contribute in some way to gene expression regulation. It is argued that the eQTL creates disruption in these sequence motifs, resulting in changes in gene regulation. 
+An important complex trait that differs amongst individuals is the level of gene expression, obtained by measuring the amount of mRNA present in specific tissues. The class of variants that influence this trait has been labelled expression quantitative trait loci (eQTL). These variants are particularly important to Genome Wide Association (GWA) studies, since they can help to prioritize likely causal variants amongst the SNPs identified by the GWA study, as well as provide some insight into the biological mechanisms used by organisms to influence complex traits and diseases \citep{albert2015role}. \citet{albert2015role} note that the majority of QTL identified by human GWA studies occur in non-coding regions that are not in linkage disequilibrium (LD) with coding exons. It is therefore hypothesised that these QTL influence their targeted gene through regulation of its expression \citep{nica2013expression}. A further hypothesis is that an eQTL and its surrounding region will be enriched in biologically active DNA elements which will contribute in some way to gene expression regulation. It is argued that the eQTL creates disruption in these DNA elements, resulting in changes in gene regulation. 
 
 \citet{lloyd2017genetic} conducted an analysis using data from the Consortium for the Architecture of Gene Expression (CAGE), which comprises individual-level whole-blood expression and genotype data on 2,765 individuals. This analysis identified a total of 14,995 independent (eQTL), of which 11,204  were located proximal to their transcript (i.e., \emph{cis}). In particular, \emph{cis}-eQTL were defined to be those associations such that the SNP was located on the same chromosome as the gene and \emph{trans}-eQTL the complement of this. The aim of this research is to identify DNA motifs in the genomic regions surrounding the set of \emph{cis}-eQTL identified by \citet{lloyd2017genetic}, following the hypothesis that flanking sequences of an eQTL will be enriched in recurring motifs of DNA that have a biological function, most likely involved in transcription.
 
@@ -99,9 +99,9 @@ Multiple computational motif finding tools were first developed for finding tran
 \citet{das2007survey} describe motif discovery as one of the most challenging problems in molecular biology and computer science, and formulate it as follows:
 given a set of sequences, find an unknown pattern that occurs frequently. If a pattern of $m$ letters long appears exactly in every sequence, a simple enumeration of all $m$-letter patterns that appear in the sequences gives the solution. To find this pattern, in a set of $t$ sequences of length $n$, we need to consider all $(n - m +1)t$ possible starting positions or candidates for motifs. 
 
-The problem increases in complexity with the introduction of $d$, which is the number of point changes that will be accepted in any motif instance. This change might take the form of a simple change in nucleotide (e.g. from an A to a T) or of an insertion or a deletion. Since an exact match may not exist, the motif detection algorithm must consider all possible combinations of ``words" of the given length across all sequences. Thus the problem becomes exponential with the number of sequences. For each combination, the detection algorithm must perform an alignment and calculate the probability that this combination of ``words" are instances of the same motif. At the end of this process, the combination of ``words" with the best probability will become the basis for a Position Weight Matrix (PWM) which will be the accepted consensual motif for this group of sequences. 
+The problem increases in complexity with the introduction of $d$, which is the number of point changes that will be accepted in any motif instance. This change might take the form of a simple change in nucleotide (e.g. from an A to a T) or of an insertion or a deletion. Since an exact match may not exist, the motif detection algorithm must consider all possible combinations of `words' of the given length across all sequences. Thus the problem becomes exponential with the number of sequences. For each combination, the detection algorithm must perform an alignment and calculate the probability that this combination of ``words" are instances of the same motif. At the end of this process, the combination of `words' with the best probability will become the basis for a Position Weight Matrix (PWM) \footnote{The Position Weight Matrix will be explained more fully in  Section 1.3} which will be the accepted consensual motif for this group of sequences. 
 
-Given this level of complexity, the motif finding problem is an example of an NP-complete problem \citep{tran2014survey} (NP $=$ nondeterministic polynomial time). A solution to the search problem can theoretically be found and verified in polynomial time by a nondeterministic algorithm which has the power of guessing correctly at every step \citep{dasgupta2006algorithms}. However, although such an algorithm theoretically exists, no polynomial time algorithm has yet been discovered for an NP-complete algorithm \citep{cormen2009introduction}.  Algorithms for solving this problem can be categorised as per \citet{sun2015affinity}, who grouped algorithms into exact algorithms, which achieve efficiency through organisational pre-processing such as a suffix tree to reduce the search space; and approximate algorithms, which use heuristic methods in combination with optimisation methods such as expectation-maximisation to reduce processing time.
+Given this level of complexity, the motif finding problem is an example of an NP-complete problem \citep{tran2014survey} (NP $=$ nondeterministic polynomial time). A solution to the search problem can theoretically be found and verified in polynomial time (with respect to the size and number of sequences) by a nondeterministic algorithm which has the power of guessing correctly at every step \citep{dasgupta2006algorithms}. However, although such an algorithm theoretically exists, no polynomial time algorithm has yet been discovered for this NP-complete algorithm \citep{cormen2009introduction}.  Algorithms for solving this problem can be categorised as per \citet{sun2015affinity}, who grouped algorithms into exact algorithms, which achieve efficiency through organisational pre-processing such as a suffix tree to reduce the search space; and approximate algorithms, which use heuristic methods in combination with optimisation methods such as expectation-maximisation to reduce processing time.
 \newpage
 \subsection{Conceptual example of a motif detection algorithm, and the Position Weight Matrix}
 This section will be used to describe one motif finding algorithm: the Gibbs algorithm \citep{Lawrence1993Gibbs}. A conceptual example will be provided, following that presented in \citet{jones2004introduction}. The concepts presented in this section underpin many of the algorithms
@@ -175,7 +175,7 @@ of a set of algorithms used in the main study and in the analyses conducted.
 \subsection{Organisation of the data}
 
 The purpose of the pilot study was to investigate the possible methods for the identification of motifs associated with eQTLs identified by  \citet{lloyd2017genetic}. The summary statistics for the set of independent eQTL detected in the CAGE analysis were downloaded from
-the CAGE browser (\texttt{http://cnsgenomics.com/shiny/CAGE/}), which contained the base pair information for each of the detected eQTL. Short target sequences of 201 base pairs, centred on the independent eQTL position (both \emph{cis} and \emph{trans}) from the CAGE analysis, formed a set of 13,930 sequences for the pilot investigation. These sequences were constructed in the R programming language \citep{rcore} and package `BSgenome.Hsapiens.UCSC.hg19' \citep{bsghg19}, using the \texttt{getSeq} R function \citep{durinck2005biomart}. This package references the Genome Reference Consortium Human Build 37 (GRCh37) \citep{Lander2001}, also known as hg19. Using the UCSC Table Browser \citep{karolchik2004ucsc} as a reference, these sequences were then divided into four subsets according to their location in the genome: exons; introns; promoters; and intergenic. This division into smaller subsets reduced running time within each class. Table \ref{freqComparisons} provides the number of target sequences that overlapped with these classes. Where a sequence overlapped with more than one class, it was included in both groups; hence the figures add up to more than the 13,930 sequences.
+the CAGE browser (\texttt{http://cnsgenomics.com/shiny/CAGE/}), which contained the base pair information for each of the detected eQTL. Short target sequences of 201 base pairs, centred on the independent eQTL position (both \emph{cis} and \emph{trans}) from the CAGE analysis, formed a set of 13,930 sequences for the pilot investigation. These sequences were constructed in the R programming language \citep{rcore} and package `BSgenome.Hsapiens.UCSC.hg19' \citep{teamTBD2014}, using the \texttt{getSeq} R function \citep{durinck2005biomart}. This package references the Genome Reference Consortium Human Build 37 (GRCh37) \citep{Lander2001}, also known as hg19. Using the UCSC Table Browser \citep{karolchik2004ucsc} as a reference, these sequences were then divided into four subsets according to their location in the genome: exons; introns; promoters; and intergenic. This division into smaller subsets reduced running time within each class. Table \ref{freqComparisons} provides the number of target sequences that overlapped with these classes. Where a sequence overlapped with more than one class, it was included in both groups; hence the figures add up to more than the 13,930 sequences.
 
 Discriminative algorithms search for motifs that are overrepresented in target sequences compared to background sequences. Since such motifs may account for the increased expression of genes associated with the target eQTLs, a discriminative approach seems ideally suited to this project.  Therefore, to identify motifs using discriminative algorithms we needed to define a background set of sequences or ``null sequences''. For this set, sequences were centred on a set 17,226 variants taken at random from the set of variants in the CAGE study that had no evidence for an effect on gene expression i.e., their association $p$-value was $>$ 0.5. Sequences of 201 base pairs surrounding these variants were again taken from the GRCh37 genome build and divided into exon, intron, promoter and intergenic subclasses. The number of null sequences in each class is provided in Table \ref{freqComparisons}. 
 
@@ -212,10 +212,10 @@ The primary motivation of the pilot study was to establish a viable set of algor
 Based on these criteria, six algorithms: DREME \citep{bailey2011dreme}, HOMER  \citep{heinz2010simple}, motifRG \citep{yao2014discriminative}, STEME \citep{reid2011steme}, BaMM!motif \citep{siebert2016bayesian} and DECOD \citep{huggins2011decod}  were eventually chosen for comparison. A brief overview of each motif follows.
 
 
-DREME (Discriminative Regular Expression Motif Elicitation) \citep{bailey2011dreme} uses an enumerative algorithm, which is exact in the sense that it examines each possible `word' in the sequence, which is very inefficient, with time increasing exponentially with the size of the motif and the number of sequences. DREME achieves efficiency by limiting the size of the motifs found. Exact enumeration is used for seed motifs restricted to 3-8 base pairs in length, and significance established through comparison with the background sequence, using Fisher's Exact Test. Significance was reported using $e$-values. The $e$-value is useful in large data sets since it offers a correction for the potentially high false discovery rate. The $e$-value offers a count of expected occurrences, calculated by multiplying ``the probability that the match might occur by chance''  by ``the number of possible occurrences''. An $e$-value close to zero represents a likely match. When the $e$-value $< 0.01$, $p$-values and $e$-values are treated as identical \citep{NCBI2006}). Using $e$-values, the motif with the highest significance is used to create a set of non-overlapping occurrences in the set of sequences that are aligned to create a position-specific probability matrix. Following this step, the motif is `erased' and the search repeated.
+DREME (Discriminative Regular Expression Motif Elicitation) \citep{bailey2011dreme} uses an enumerative algorithm, which is exact in the sense that it examines each possible `word' in the sequence, which is very inefficient, with time increasing exponentially with the size of the motif and the number of sequences. DREME achieves efficiency by limiting the size of the motifs found. Exact enumeration is used for seed motifs restricted to 3-8 base pairs in length, and significance established through comparison with the background sequence, using Fisher's Exact Test. Significance was reported using $e$-values. The $e$-value is useful in large data sets since it offers a correction for the potentially high false discovery rate. The $e$-value offers a count of expected occurrences for the given $p$-value, calculated by multiplying ``the probability that the match might occur by chance'' (the $p$-value)  by ``the number of possible occurrences''. An $e$-value close to zero represents a likely match. When the $e$-value $< 0.01$, $p$-values and $e$-values are treated as identical \citep{NCBI2006}). Using $e$-values, the motif with the highest significance is used to create a set of non-overlapping occurrences in the set of sequences that are aligned to create a position-specific probability matrix. Following this step, the motif is `erased' and the search repeated.
  
 HOMER \citep{heinz2010simple} begins by weighting background sequences to resemble the same GC-content distribution of the target sequences, since enrichment scores used in the motif detection algorithms might fail if the distribution of the length of GC content of the target sequences significantly
-differs from the background set. Input sequences are then ``parsed" to gather all oligos of the desired motif length and read into an oligo table that records how many times each oligo occurs in the target and background sequences. These frequencies are used to calculate the relative enrichment of each oligo, using the cumulative binomial distribution. The enrichment of longer oligos are calculated using the enrichment values of smaller oligos that make up the longer oligos, similar to the DREME method of combining seed significances. The most enriched oligos are then subjected to a local optimization algorithm which uses a probability matrix to score each oligo according to its similarity to the matrix. By decreasing the detection threshold, more oligos can be included, until an optimal enrichment is found. New probability matrices can then be created at different detection levels, and the matrix that results in the highest enrichment will be used to produce the final motif. This motif is then masked from the sequences and the whole process repeated to find the next motif \citep{homer_ws}.
+differs from the background set. Input sequences are then ``parsed" to gather all oligos (subsets of 2, 3, and 4 nucleotides long) of the desired motif length and read into an oligo table that records how many times each oligo occurs in the target and background sequences. These frequencies are used to calculate the relative enrichment of each oligo, using the cumulative binomial distribution. The enrichment of longer oligos are calculated using the enrichment values of smaller oligos that make up the longer oligos, similar to the DREME method of combining seed significances. The most enriched oligos are then subjected to a local optimization algorithm which uses a probability matrix to score each oligo according to its similarity to the matrix. By decreasing the detection threshold, more oligos can be included, until an optimal enrichment is found. New probability matrices can then be created at different detection levels, and the matrix that results in the highest enrichment will be used to produce the final motif. This motif is then masked from the sequences and the whole process repeated to find the next motif \citep{homer_ws}.
 
 MotifRG \citep{yao2014discriminative} begins by counting all $k$-mers, for a given motif length $k$, in all sequences. The motifRG algorithm uses logistic regression to fit a model with the best absolute $z$-value (which needs to be above an enrichment threshold). The chosen $k$-mer is used as a seed motif, which is then refined by stepped extension of a given number of nucleotides on each end of the seed at a time. Refinement ends when the $z$-value has not improved after two successive steps. Small perturbations in the seed motif are then tried and accepted if the $z$-value is improved, followed by the extension process. Since a small difference in the $z$-value may not be meaningful, a simple bootstrap test is done if the difference falls below a threshold. A default of 5 random samples of the sequences are used to calculate $z$-values for the new and original motifs. These $z$-values are then subjected to a $t$-test to establish whether their difference is significant.
 Once the motif is established, it is masked from all sequences and the process begun again.
@@ -295,7 +295,7 @@ The six different algorithms returned a total of 770 motifs in the exon sequence
     \label{fig: exon_cladogram}
 \end{figure}
 
-Using the JASPAR data base, the STAMP algorithm was able to match all of the motifs as potential binding sites for transcription factors. It is often the case that a single transcription factor has many binding sites. For this reason the 770 motifs were identified as binding sites for 99 transcription factors, with more than half the motifs identified as potential binding sites for a subset of just 17 transcription factors, as illustrated in Table \ref{fig: motif_tf_summary_exons}. 
+Using the JASPAR data base, the STAMP algorithm was able to match all of the motifs as potential binding sites for transcription factors. It is often the case that a single transcription factor has many different binding motifs. For this reason the 770 motifs were identified as binding sites for 99 transcription factors, with more than half the motifs identified as potential binding sites for a subset of just 17 transcription factors, as illustrated in Table \ref{fig: motif_tf_summary_exons}. 
 
 
 \begin{table}[!ht]
@@ -326,9 +326,9 @@ Pax4 & 15 & 385\\
 \end{tabular}
 \end{table} 
 \newpage
-It should be noted that the $p$-values for these matches were not subjected to any Bonferroni correction. In the larger study, this correction was implemented, resulting in a much smaller number of matched motifs and a large number of motifs unmatched to a transcription factor.
+It should be noted that the $p$-values for these matches were not subjected to any multiple testing correction. In the larger study, this correction was implemented, resulting in a much smaller number of matched motifs and a large number of motifs unmatched to a transcription factor.
 
-Enrichment values for motifs found in eQTL sequences compared to the null sequences are provided in Table \ref{motif_evalue_summary_exons}. These enrichment values are reported as $e$-values by all algorithms apart from HOMER, whose enrichment values are reported as $p$-values. As mentioned previously, if an $e$-value $< 0.01$, the $e$-value is considered to be identical with the $p$-value \citep{NCBI2006}. As illustrated, many values found by STEME are at odds with those found by other algorithms. As mentioned previously, RGmotif did not provide enrichment values and so is missing from this table. 
+Enrichment values for motifs found in eQTL sequences compared to the null sequences are provided in Table \ref{motif_evalue_summary_exons}. These enrichment values are reported as $e$-values by all algorithms apart from HOMER, whose enrichment values are reported as $p$-values. As mentioned previously, if an $e$-value $< 0.01$, the $e$-value is considered to be identical with the $p$-value \citep{NCBI2006}. As illustrated, many values found by STEME (high $e$-values) are at odds with those found by other algorithms. As mentioned previously, RGmotif did not provide enrichment values and so is missing from this table. 
 
 \begin{table}[!ht]
 \centering
@@ -402,7 +402,7 @@ This analysis indicated that using sequences of length 2001 base pairs is a good
 \section{Large scale study} 
 \subsection{Materials and methods}
 
-The main study used HOMER  \citep{heinz2010simple}, BaMM! \citep{siebert2016bayesian} and DREME \citep{bailey2011dreme} motif algorithms to analyse 10,499 genomic sequences centred at the \emph{cis}-eQTLs discovered in \citet{lloyd2017genetic}. Only the \emph{cis}-eQTL were used in the main study as  \emph{cis} gene regulation is well understood relative to  \emph{trans} regulation in the genomics literature. As this was an
+The main study used HOMER  \citep{heinz2010simple}, BaMM! \citep{siebert2016bayesian} and DREME \citep{bailey2011dreme} motif algorithms to analyse 10,499 genomic sequences centred at the \emph{cis}-eQTLs discovered in \citet{lloyd2017genetic}. Only the \emph{cis}-eQTL were used in the main study as  \emph{cis} gene regulation is better understood relative to  \emph{trans} regulation in the genomics literature. As this was an
 exploratory study, \emph{trans} gene regulations would have added an unwanted complexity, although it warrants scientific
 investigation. The null sequences were generated using 2 kb sequences centred around a random sample of 10,499 null variants from the \citet{lloyd2017genetic} gene expression study. 
 
@@ -582,7 +582,7 @@ DREME & HOMER & BaMM!motif && DREME & HOMER & BaMM!motif\\
 HOMER returned a large number of motifs, but none of them met the stringent cut-off threshold. DREME found approximately the same number of motifs in the null sequences as in the eQTL sequences, and BaMM!motif found many more (168 significant motifs in the null compared to 38 in the eQTL sequences). These results from DREME and BaMM!motif algorithms provide evidence to contradict the hypothesis that null sequences do not harbour motifs. 
 
 
-The BaMM!motif results in the second check show a further unexpected result, where BaMM!motif reported motifs in the null Group A versus null Group B analysis. It was expected that the algorithms should find no significant motifs in this analysis (Table \ref{nullHalfGroups}).
+The BaMM!motif results in the second check show a further unexpected result, where BaMM!motif reported motifs in the null Group A versus null Group B analysis. It was expected that the algorithms should find few significant motifs in this analysis (Table \ref{nullHalfGroups}).
 
 \begin{table}[!htbp]
 \caption{Motifs enriched in null Group A compared to null Group B}
@@ -599,7 +599,7 @@ DREME & HOMER & BaMM!motif && DREME & HOMER & BaMM!motif\\
 \end{tabular}
 \end{table}
 
-The results for both DREME and HOMER in null Group A versus null Group B analysis are as expected (Table \ref{nullHalfGroups}). DREME found no motifs, whilst HOMER found some motifs at a very low level of significance ($p$-value $>1\times10^{-8}$). However, BaMM!motif reported a large number of motifs. Given this result, the test was repeated for the BaMM!motif algorithm, reversing the groups. BaMM!motif found a similar number of motifs significantly enriched in Group B compared to Group A. Furthermore, the most highly enriched motif for Group A (CTACTAAAAATACAAAA) is also the most highly enriched motif for Group B.
+The results for both DREME and HOMER in null Group A versus null Group B analysis suggest that the proportion of false positives, expected at the chosen significant thresholds, is negligible (Table \ref{nullHalfGroups}). DREME found no motifs, whilst HOMER found some motifs at a very low level of significance ($p$-value $>1\times10^{-8}$). However, BaMM!motif reported a larger number of motifs. Given this result, the test was repeated for the BaMM!motif algorithm, reversing the groups. BaMM!motif found a similar number of motifs significantly enriched in Group B compared to Group A. Furthermore, the most highly enriched motif for Group A (CTACTAAAAATACAAAA) is also the most highly enriched motif for Group B.
 
 These analyses motivated a further validation of algorithm enrichment values reported by each algorithm. To this end, the AME algorithm \citep{Buske2010} within the MEME suite  was used to provide discriminative enrichment values for all significant motifs found by all algorithms. The AME algorithm is not able to perform de novo motif detection, but it can provide enrichment values for given motifs. Motifs found by AME to be enriched with a $p$-value$<1\times^{-50}$ were selected for further processing by the STAMP algorithm. Final significant motif figures are provided in Table \ref{ameResults}.
 
@@ -658,7 +658,7 @@ Pax5 & $1.92\times10^{-3}$ & ---------TCAAGTGATC\\
 \end{table}
 
 \newpage
-Given that $190 \times 5 = 950$ transcription factors were provided, the match probability needed to be adjusted accordingly. Applying a Bonferroni correction to an initial $p < 0.05$ meant that $p$-value $< 5.0\times10^{-5}$ threshold was required. Applying this match threshold, 37 of the 190 motifs were matched to 28 TFs. Of these, nine TFs were matched to motifs from more than one algorithm.
+Given that $190 \times 5 = 950$ transcription factors were provided, the match probability needed to be adjusted accordingly. Applying a Bonferroni correction to an initial $p < 0.05$ meant that $p$-value $< 5.0\times10^{-5}$ threshold was required. Applying this match threshold, 37 of the 190 motifs were matched to 28 TFs. Of these, eight TFs were matched to motifs from more than one algorithm.
 Table \ref{tfsWithMotifs} lists these nine TFs with best match $p$-values.
 
 \begin{table}[!htbp]
@@ -676,7 +676,6 @@ Fos              & $2.66\times10^{-6}$ & NMF & $2.46\times10^{-5}$\\
 ID1              & $1.50\times10^{-5}$ & NMF & $6.61\times10^{-6}$\\
 MEF2A        & $1.95\times10^{-5}$ & NMF & $2.12\times10^{-8}$\\
 Prrx2           & $9.64\times10^{-6}$ & NMF & $3.63\times10^{-5}$\\
-SQUA         & $6.27\times10^{-6}$ & NMF  &$ 3.71\times10^{-7}$\\
 ESR1         & $4.96\times10^{-5}$ & $3.38\times10^{-5}$ & NMF\\
 \bottomrule[0.2em]
 \end{tabular}
@@ -707,7 +706,7 @@ ESR1       &  2\\
 \newpage
 To more accurately estimate the number of binding sites per sequence per TF, the HOMER annotation software was used as described above (3.1.4 Analysis of the algorithm results). Motifs found by both DREME and BaMM!motif were formatted appropriately to be submitted for annotation by HOMER, as well as the HOMER motifs. The annotation algorithm returns a table of data recording the occurrence of each motif for each of the 10,499 sequences. A simple program was written to add and record the occurrence of all matching motifs for each TF, for each algorithm. This process provides an estimate of the abundance of binding sites for TFs across all sequences. Initially, abundance was measured for all TFs, but the process was then repeated for the nine robust TFs. 
 
-Figure \ref{heatmap} shows the abundance of all motifs over all sequences, and Figure \ref{heatmap2} illustrates the abundance of motifs matching the nine robust TFs over all sequences. As illustrated in Figure \ref{heatmap2}, a relatively large number of motifs that match IRF are present in more than half of the 10,499 sequences, but motifs matching Snail, DeltaEF1 and ESR1 are present in moderate to high numbers over all sequences. 
+Figure \ref{heatmap} shows the abundance of all motifs over all sequences, and Figure \ref{heatmap2} illustrates the abundance of motifs matching the nine robust TFs over all sequences. As illustrated in Figure \ref{heatmap2}, a relatively large number of motifs that match IRF1 are present in more than half of the 10,499 sequences, but motifs matching Snail, DeltaEF1 and ESR1 are present in moderate to high numbers over all sequences. 
 
 
 \begin{figure}[!htbp]
@@ -729,7 +728,7 @@ Although these top transcription factors bind to motifs that are enriched in eQT
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width= 0.9\textwidth]{AllMotifComparison.pdf} 
+\includegraphics[width= 0.9\textwidth]{AllMotifComparison.png} 
 \caption{Comparison of abundance of binding sites for all TFs within eQTL and null sequences. x-axis: All TFs with binding sites enriched in eQTL sequences. y-axis: Abundance of binding sites in eQTL sequences (green) and null sequences (orange)} 
 \label{allMotifComparison}
 \end{figure}
@@ -749,31 +748,35 @@ Although these top transcription factors bind to motifs that are enriched in eQT
 \end{table}
  
 
-\begin{figure}[!htbp]
+\begin{figure}[!htbp]Critical role of IRF1 and BATF in forming chromatin landscape during type 1 regulatory cell differentiation
 \centering
-\includegraphics[width= 0.9\textwidth]{Top9TFsComparison.pdf} 
+\includegraphics[width= 0.9\textwidth]{Top9TFsComparison.png} 
 \caption{Comparison of abundance of binding sites for nine TFs within eQTL and null sequences. x-axis: Nine TFs with binding sites enriched in eQTL sequences. y-axis: Total number of binding sites over all eQTL sequences (green) and null sequences (orange)} 
 \label{top9Comparison}
 \end{figure}
 \newpage
 
-An underlying hypothesis of this project is that eQTL flanking sequences will be rich in biologically active motifs, and, further, that disruption of these motifs through the presence of the eQTL will result in changed regulation of gene or protein expression. Under this hypothesis, if an eQTL is responsible for the disruption of the motif, motifs enriched in the eQTL sequences are more likely to be close to the disruptive variant. A further tool offered by the HOMER software is the distance tool, which calculates average distance from the centre for each motif. This information was used to create graphs of average distance from the variant (both null and eQTL) for all motifs that bind to transcription factors. Figure \ref{distance} illustrates the extent to which binding motifs enriched in eQTL sequences are clustered around either the null variant or the eQTL, and Figure \ref{nullDistance} illustrates the extent to which binding motifs enriched in null sequences are clustered around the null variant. 
+An underlying hypothesis of this project is that eQTL flanking sequences will be rich in biologically active motifs, and, further, that disruption of these motifs through the presence of the eQTL will result in changed regulation of gene or protein expression. Under this hypothesis, if an eQTL is responsible for the disruption of the motif, motifs enriched in the eQTL sequences are more likely to be close to the disruptive variant. A further tool offered by the HOMER software is the distance tool, which calculates average distance from the centre for each motif. This information was used to create graphs of average distance from the variant (both null and eQTL) for all motifs that bind to transcription factors. Figure \ref{distance} illustrates the extent to which binding motifs enriched in eQTL sequences are clustered around either the null variant or the eQTL. The same calculation was performed for motifs enriched in the null sequences. Figure \ref{nullDistance} illustrates the extent to which binding motifs enriched in null sequences are clustered around the null variant or the eQTL. 
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width= 0.6\textwidth]{RplotEQTLandNullSequencesCompared.pdf} 
+\includegraphics[width= 0.65\textwidth]{RplotEQTLandNullSequencesCompared.pdf} 
 \caption{Comparison of distance from eQTL and null variants for TF binding sites enriched in eQTL sequences. x-axis: Distance (in bp) of motif position from the central variant (eQTL or null); y-axis: Frequency of motifs per bp per total sequences}
 \label{distance}
 \end{figure}
 
-\begin{figure}[!htbp]
+\newpage
+
+
+\begin{figure}[!ht]
 \centering
-\includegraphics[width= 0.4\textwidth]{NullMotifsPlot.pdf} 
-\caption{Comparison of distance from the centre for TF binding sites enriched in null sequences. x-axis: Distance (in bp) of motif position from the null variant; y-axis: Frequency of motifs per bp per total sequences}
+\includegraphics[width= 0.6\textwidth]{RplotNullMotifsCompared.pdf} 
+\caption{Comparison of distance from the centre for TF binding sites enriched in null sequences. x-axis: Distance (in bp) of motif position from the central variant (eQTL or null); y-axis: Frequency of motifs per bp per total sequences}
 \label{nullDistance}
 \end{figure}
 
 The incidence of TFs enriched in null sequences for both eQTL and null sequences is provided for the top eight TFs in Table \ref{TFnosNull}.
+
 
 \begin{table}[!htbp]
 \caption{Total number of binding sites for top eight TFs enriched in null sequences over both eQTL and null sequences}
@@ -789,8 +792,8 @@ null sequences&24770&15734&12510&12355&9681&9630&9574&8923\\
 \end{tabular}
 \end{table}
 
-
 Although the focus of this section of the report has been on motifs that were strongly matched to transcription factors, these motifs only represent 19.5\% of the data. No strong matches were found for 80.5\% of motifs. 
+
 
 
 \newpage
@@ -810,12 +813,12 @@ As part of the validation process, the DREME, HOMER and BaMM!motif algorithms se
 The null sequences showed fewer instances of motifs. Motifs enriched in null sequences compared with eQTL sequences had fewer instances than motifs enriched in eQTL sequences. The most abundant null-enriched transcription factor (SOX9) has a total of 24,770 binding sites over all 10,499 null sequences, compared to 36,440 binding sites for the top eQTL-enriched transcription factor (IRF1) in eQTL sequences. 
 
 \paragraph{Distance from the variant:} 
-Distance from the variant may be a factor in determining disruption of the binding site. Null-enriched TFs had binding sites that tended to cluster some distance from the null variant. Binding sites for eQTL-enriched TFs were more strongly clustered around the eQTL than around the null variant.
+Distance from the variant may be a factor in determining disruption of the binding site. Null-enriched TFs had binding sites that tended to cluster some distance from both the null variant and the eQTL. The converse was true for eQTL-enriched TFs, although binding sites for eQTL-enriched TFs were also more strongly clustered around the eQTL than around the null variant.
 
-Strong matches were found for nine TFs with binding sites found by at least two algorithms. Descriptions of four of these TFs follow \citep{Weizmann2018}:
+Strong matches were found for nine TFs with binding sites found by at least two algorithms. Descriptions of six of these TFs follow \citep{Weizmann2018}:
 
 \paragraph{IRF1 Interferon Regulatory Factor 1:}
-The protein encoded by this gene is a transcriptional regulator and tumor suppressor, serving as an activator of genes involved in both innate and acquired immune responses. The encoded protein activates the transcription of genes involved in the body's response to viruses and bacteria, playing a role in cell proliferation, apoptosis, the immune response, and DNA damage response. This protein represses the transcription of several other genes. As a tumor suppressor, it both suppresses tumor cell growth and stimulates an immune response against tumor cells. Defects in this gene have been associated with gastric cancer, myelogenous leukemia, and lung cancer \citep{Weizmann2018}.
+The protein encoded by this gene is a transcriptional regulator and tumor suppressor, serving as an activator of genes involved in both innate and acquired immune responses. The encoded protein activates the transcription of genes involved in the body's response to viruses and bacteria, playing a role in cell proliferation, apoptosis, the immune response, and DNA damage response. In particular, IRF1 is a pioneer transcription factor, regulating chromatin accessibility during the differentiation of certain T-cells \citep{Karwacz2017}. As a tumor suppressor, IRF1 both suppresses tumor cell growth and stimulates an immune response against tumor cells. Defects in this gene have been associated with gastric cancer, myelogenous leukemia, and lung cancer \citep{Weizmann2018}.
 
 \paragraph{Snail:}
 Involved in induction of the epithelial to mesenchymal transition (EMT), formation and maintenance of embryonic mesoderm, growth arrest, survival and cell migration. Binds to 3 E-boxes of the E-cadherin/CDH1 gene promoter and to the promoters of CLDN7 and KRT8 and, in association with histone demethylase KDM1A which it recruits to the promoters, causes a decrease in dimethylated H3K4 levels and represses transcription. Associates with EGR1 and SP1 to mediate tetradecanoyl phorbol acetate (TPA)-induced up-regulation of CDKN2B, possibly by binding to the CDKN2B promoter region 5-TCACA-3. In addition, may also activate the CDKN2B promoter by itself.
@@ -825,6 +828,13 @@ Involved in induction of the epithelial to mesenchymal transition (EMT), formati
 
 Acts as a transcriptional repressor. Inhibits interleukin-2 (IL-2) gene expression. Enhances or represses the promoter activity of the ATP1A1 gene depending on the quantity of cDNA and on the cell type. Represses E-cadherin promoter and induces an epithelial-mesenchymal transition (EMT) by recruiting SMARCA4/BRG1. Represses BCL6 transcription in the presence of the corepressor CTBP1. Positively regulates neuronal differentiation. Represses RCOR1 transcription activation during neurogenesis. Represses transcription by binding to the E box (5-CANNTG-3). Promotes tumorigenicity by repressing stemness-inhibiting microRNAs.
 
+\paragraph{ID1}
+
+ID1 is a member of the helix-loop-helix (HLH) family of transcription factors that are expressed in many tissues. It competitively dimerizes with other members of the HLH family (E2A, E2-2 and HEB), and inhibits their ability to bind DNA and transactivate specific target genes, which are required for cell differentiation In addition to their ability to block differentiation, ID1 genes are expressed in actively proliferating cells, and are known to promote cell proliferation. Thus, deregulation of Id gene expression could contribute to the development of cancer by disrupting these normal cellular processes \citep{Suh2008}. 
+
+\paragraph{Prrx2}
+
+According to \citet{Weizmann2018}, expression is localized to proliferating fetal fibroblasts and the developing dermal layer, with downregulated expression in adult skin. However \citet{juang2016} found that upregulated Prrx2 is associated with poor survival in breast cancer, due to its enhancement of migration, invasion and anchorage?independent growth of MCF10A cells and inducement of partial epithelial mesenchymal transition (EMT).
 
 \paragraph{ESR1}
 
@@ -837,7 +847,7 @@ ESR1 is another TF that has been targeted for its role in the spread of cancer. 
 
 The association of Snail, SP1 and EGR1 is an example of TFs working as a complex rather than as single activators or repressors of genes. Although no binding sites were found for EGR1, \citet{Hu2010} found that the overlapping EGR1/SP1 site (ATCACAGCGGACAGGTATCGGAGCCTAAGGGGG) was the significant motif. A search for this sequence amongst the eQTL flanking regions using FIMO (part of the MEME suite) \citep{Grant2011} found 78,556 motif occurrences with  $p$-value $< 0.001$, maximum $q$-value = 0.515. The $q$-value is an indication of the false discovery rate if the occurrence is accepted as significant, which means that 40,456 of the 78,556 motif occurrences are likely to be false positives. This leaves approximately 38,000 occurrences of the motif over the full set of sequences.
 
-The importance of TF complexes was highlighted by \citet{Jolma2015} and motivated the search for all occurrences of all TFs over all sequences, in order to focus attention on the combinations of TFs in the same sequences. Visualisation of these combinations was accomplished through the heatmaps, which showed a number of combination of TFs that appear to be most abundant in the same sequences. Binding sites for Snail, deltaEF1,  ESR1, RREB1 and SP1 appear in moderate to low numbers over all sequences, but the combination of ID1, MEF2A, Broad-complex{\_}1, SQUA, and, to a lesser extent, IRF1, IRF2, Dorsal{\_}1 and Fos, have the same group of sequences exhibiting no or few binding sites. However, some of these TFs are bound by the same motifs, which provides an alternative explanation for the similarity of their sequence profiles.
+The importance of TF complexes was highlighted by \citet{Jolma2015} and motivated the search for all occurrences of all TFs over all sequences, in order to focus attention on the combinations of TFs in the same sequences. Visualisation of these combinations was accomplished through the heatmaps, which showed a number of combination of TFs that appear to be most abundant in the same sequences. Binding sites for Snail, deltaEF1,  ESR1, RREB1 and SP1 appear in moderate to low numbers over all sequences, but the combination of ID1, MEF2A, Broad-complex{\_}1, SQUA, and, to a lesser extent, IRF1, IRF2, Dorsal{\_}1 and Fos, have the same group of sequences exhibiting no or few binding sites. However, some of these TFs are bound by the same motifs, which provides an alternative explanation for the similarity of their sequence profiles. 
 
 \citet{Jolma2015} also drew attention to alterations in binding specificity of transcription factor pairs, a point already raised through the search for the overlapping SP1/EGR1 site. This may account for some of the unmatched (80\%) of motifs found by the algorithms, which are potentially a set of novel motifs.
 
@@ -846,6 +856,7 @@ It was initially expected that motifs found would form binding sites for known T
 \subsection{Limitations of the study}
 There are a number of caveats on this research which should be taken into account when considering the results:
 \begin{enumerate}
+\item This analysis has been of eQTLs derived from whole blood gene expression, and the transcription factors identified are likely to be important to the expression of genes in this tissue. However, complex traits result from gene expression in different tissues with possibly different genetic control mechanisms. Whilst these findings are relevant for traits controlled by genes expressed in blood (such as immunity or tumour proliferation), more tissues should be considered to improve our understanding of the complex traits.
 \item The description of the algorithms (either in academic journals or through web pages) are not complete. To a large extent the methods are black boxes, and possible causes of substantial confounding, as well as the convergence properties of the algorithms are left unexplained.
 \item In particular, the strong tendency of the BaMM!motif algorithm to provide false positives, as evidenced by the null versus null study, is of substantial concern. In this study other algorithms were used to validate results.
 \item The null set does not take into account potentially confounding characteristics such as LD or gene content. 
@@ -860,7 +871,7 @@ The findings of this study have raised a number of questions that might be consi
 
 Firstly, the concerns raised as limitations need to be addressed. In particular, this research should explore the use of high-throughput computing using longer sequences (greater than 30kb) to overcome the eQTL mapping precision problem. In addition, the set of null sequences needs to be more carefully formed in order to address possible confounders such as LD or gene content.
 
-Secondly, four findings of this research provide foci for validation and more in-depth study:
+Secondly, four findings of this research provide loci for validation and more in-depth study:
 \begin{enumerate}
 \item The differential spatial distribution of the motifs about the variant is a promising avenue of study which may distinguish between eQTLs and null variants, but needs to be validated through replication and different study design.
 
